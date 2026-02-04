@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://gwh8fyne4an6"]
+
+[ext_resource type="Texture2D" uid="uid://boh3ipnb60jh4" path="res://assets/notbalatro.png" id="1_yiag5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgmmg"]
+atlas = ExtResource("1_yiag5")
+region = Rect2(0, 0, 71, 95)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4dx8l"]
+size = Vector2(72, 96)
+
+[node name="Card" type="Node2D" unique_id=104600597]
+scale = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1109281394]
+texture = SubResource("AtlasTexture_tgmmg")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1622486908]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1739295844]
+shape = SubResource("RectangleShape2D_4dx8l")
