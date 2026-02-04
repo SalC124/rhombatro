@@ -1,5 +1,7 @@
 extends Node2D
 
+const CardTypes = preload("res://scripts/card_types.gd")
+
 const COLLISION_MASK_CARD = 1
 var screen_size
 var value: int
@@ -13,7 +15,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos = get_global_mouse_position()
 		card_being_dragged.position = Vector2(clamp(mouse_pos.x,0, screen_size.x),
@@ -43,18 +45,19 @@ func finish_drag():
 func connect_card_signals(card):
 	card.connect("hovered", on_hovered_over_card)
 	card.connect("hovered_off", on_hovered_off_card)
-	
+	card.connect("direction_kaisened", on_direction_kaisened_card)
+
 
 func on_hovered_over_card(card):
 	if !is_hovering_on_card:
 		is_hovering_on_card = true
 		highlight_card(card, true)
-	
-	
+
+
 func on_hovered_off_card(card):
 	if !card_being_dragged:
 		highlight_card(card, false)
-		
+
 		# check if hovered off card straight onto another card
 		var new_card_hovered = raycast_check_for_card()
 		if new_card_hovered:
@@ -62,6 +65,16 @@ func on_hovered_off_card(card):
 		else:
 			is_hovering_on_card = false
 
+
+func on_direction_kaisened_card(card, direction):
+	var tween = create_tween()
+	match direction:
+		CardTypes.Direction.LEFT:
+			tween.tween_property(card, "rotation_degrees", 6.7, 0.1)
+		CardTypes.Direction.RIGHT:
+			tween.tween_property(card, "rotation_degrees", -6.7, 0.1)
+		CardTypes.Direction.NONE:
+			tween.tween_property(card, "rotation_degrees", 0, 0.1)
 
 func highlight_card(card, hovered):
 	if hovered:
@@ -87,7 +100,7 @@ func raycast_check_for_card():
 func get_card_with_highest_z_index(cards):
 	var highest_z_card = cards[0].collider.get_parent()
 	var highest_z_index = highest_z_card.z_index
-	
+
 	for i in range(1, cards.size()):
 		var current_card = cards[i].collider.get_parent()
 		if current_card.z_index > highest_z_index:
