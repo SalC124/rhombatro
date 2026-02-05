@@ -9,12 +9,14 @@ var value: int
 var suit: int
 var card_being_dragged
 var is_hovering_on_card
+var player_hand_reference
 
 # Drag lag settings
 const DRAG_SMOOTHNESS = 0.25  # Lower = more lag (0.1-0.3 is good range)
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
+	player_hand_reference = $"../PlayerHand"
 
 func _process(_delta: float) -> void:
 	if card_being_dragged:
@@ -44,6 +46,11 @@ func start_drag(card):
 
 func finish_drag():
 	card_being_dragged.scale = Vector2(1.05,1.05)
+	
+	# logic for slots if we did them lmao
+	
+	player_hand_reference.add_card_to_hand(card_being_dragged)
+	
 	card_being_dragged = null
 
 

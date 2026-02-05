@@ -7,7 +7,7 @@ signal hovered_off(card: Node2D)
 signal speed_changed(card: Node2D, speed: float)
 
 var prev_x: float
-
+var starting_position
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# All cards must be a child of CardManager or this will err

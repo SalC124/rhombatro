@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://cvrfd1rl7qiea"]
 
 [ext_resource type="Script" uid="uid://davr8dw2xo6sd" path="res://scripts/card_manager.gd" id="1_rvslj"]
-[ext_resource type="PackedScene" uid="uid://gwh8fyne4an6" path="res://scenes/Card.tscn" id="2_0bbpv"]
+[ext_resource type="Script" uid="uid://uxoed6gc20gs" path="res://scenes/PlayerHand.gd" id="2_rvslj"]
 
 [node name="Main" type="Node2D" unique_id=174701204]
 
 [node name="CardManager" type="Node2D" parent="." unique_id=976822695]
 script = ExtResource("1_rvslj")
 
-[node name="Card" parent="CardManager" unique_id=104600597 instance=ExtResource("2_0bbpv")]
+[node name="PlayerHand" type="Node2D" parent="." unique_id=1148707022]
+script = ExtResource("2_rvslj")
