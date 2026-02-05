@@ -14,6 +14,7 @@ size = Vector2(71, 95)
 script = ExtResource("1_tgmmg")
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1109281394]
+texture_filter = 1
 texture = SubResource("AtlasTexture_tgmmg")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1622486908]
