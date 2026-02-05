@@ -3,23 +3,28 @@ extends Node2D
 const CardTypes = preload("res://scripts/card_types.gd")
 
 const COLLISION_MASK_CARD = 1
+
 var screen_size
 var value: int
 var suit: int
 var card_being_dragged
 var is_hovering_on_card
 
-# Called when the node enters the scene tree for the first time.
+# Drag lag settings
+const DRAG_SMOOTHNESS = 0.25  # Lower = more lag (0.1-0.3 is good range)
+
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos = get_global_mouse_position()
-		card_being_dragged.position = Vector2(clamp(mouse_pos.x,0, screen_size.x),
-		clamp(mouse_pos.y,0, screen_size.y))
+		var target_pos = Vector2(
+			clamp(mouse_pos.x, 0, screen_size.x),
+			clamp(mouse_pos.y, 0, screen_size.y)
+		)
+		# Smooth follow instead of instant snap
+		card_being_dragged.position = card_being_dragged.position.lerp(target_pos, DRAG_SMOOTHNESS)
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -45,8 +50,7 @@ func finish_drag():
 func connect_card_signals(card):
 	card.connect("hovered", on_hovered_over_card)
 	card.connect("hovered_off", on_hovered_off_card)
-	card.connect("direction_kaisened", on_direction_kaisened_card)
-
+	card.connect("speed_changed", on_speed_changed_card)
 
 func on_hovered_over_card(card):
 	if !is_hovering_on_card:
@@ -65,16 +69,20 @@ func on_hovered_off_card(card):
 		else:
 			is_hovering_on_card = false
 
+func on_speed_changed_card(card, speed):
+	const MAX_TILT = 15.0
+	const MAX_SPEED = 75.0
+	const MIN_DURATION = 0.05
+	const MAX_DURATION = 0.2
 
-func on_direction_kaisened_card(card, direction):
+	var speed_abs = abs(speed)
+	var tilt_amount = clamp(speed_abs / MAX_SPEED, 0.0, 1.0) * MAX_TILT
+	var tilt_angle = tilt_amount * sign(speed) * -1  # Negative so it tilts "into" the movement
+
+	var duration = lerp(MAX_DURATION, MIN_DURATION, clamp(speed_abs / MAX_SPEED, 0.0, 1.0))
+
 	var tween = create_tween()
-	match direction:
-		CardTypes.Direction.LEFT:
-			tween.tween_property(card, "rotation_degrees", 6.7, 0.1)
-		CardTypes.Direction.RIGHT:
-			tween.tween_property(card, "rotation_degrees", -6.7, 0.1)
-		CardTypes.Direction.NONE:
-			tween.tween_property(card, "rotation_degrees", 0, 0.1)
+	tween.tween_property(card, "rotation_degrees", tilt_angle, duration)
 
 func highlight_card(card, hovered):
 	if hovered:

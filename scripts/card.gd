@@ -4,10 +4,9 @@ const CardTypes = preload("res://scripts/card_types.gd")
 
 signal hovered(card: Node2D)
 signal hovered_off(card: Node2D)
-signal direction_kaisened(card: Node2D, direction: CardTypes.Direction)
+signal speed_changed(card: Node2D, speed: float)
 
 var prev_x: float
-var prev_direction := CardTypes.Direction.NONE
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -27,17 +26,9 @@ func _process(_delta: float) -> void:
 func _physics_process(_delta: float) -> void:
 	var current_x: float = global_position.x
 	var delta_x = current_x - prev_x
-	var movement_sign = sign(delta_x) # -1, 0, or 1
 
-	var direction = {
-		-1.0: CardTypes.Direction.LEFT,
-		0.0: CardTypes.Direction.NONE,
-		1.0: CardTypes.Direction.RIGHT
-	}[movement_sign]
-
-	if direction != prev_direction:
-		emit_signal("direction_kaisened", self, direction)
-		prev_direction = direction
+	# Emit speed for tilt calculation
+	emit_signal("speed_changed", self, delta_x)
 
 	prev_x = current_x
 
