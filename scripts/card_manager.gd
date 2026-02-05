@@ -70,14 +70,14 @@ func on_hovered_off_card(card):
 			is_hovering_on_card = false
 
 func on_speed_changed_card(card, speed):
-	const MAX_TILT = 15.0
-	const MAX_SPEED = 75.0
+	const MAX_TILT = 35.0
+	const MAX_SPEED = 50.0
 	const MIN_DURATION = 0.05
-	const MAX_DURATION = 0.2
+	const MAX_DURATION = 0.1
 
 	var speed_abs = abs(speed)
 	var tilt_amount = clamp(speed_abs / MAX_SPEED, 0.0, 1.0) * MAX_TILT
-	var tilt_angle = tilt_amount * sign(speed) * -1  # Negative so it tilts "into" the movement
+	var tilt_angle = tilt_amount * sign(speed) * -1
 
 	var duration = lerp(MAX_DURATION, MIN_DURATION, clamp(speed_abs / MAX_SPEED, 0.0, 1.0))
 

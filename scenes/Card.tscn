@@ -8,7 +8,7 @@ atlas = ExtResource("1_yiag5")
 region = Rect2(0, 0, 71, 95)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4dx8l"]
-size = Vector2(72, 96)
+size = Vector2(71, 95)
 
 [node name="Card" type="Node2D" unique_id=104600597]
 script = ExtResource("1_tgmmg")
