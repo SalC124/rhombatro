@@ -1,7 +1,17 @@
 [gd_scene format=3 uid="uid://cvrfd1rl7qiea"]
 
 [ext_resource type="Script" uid="uid://davr8dw2xo6sd" path="res://scripts/card_manager.gd" id="1_rvslj"]
-[ext_resource type="Script" uid="uid://uxoed6gc20gs" path="res://scenes/PlayerHand.gd" id="2_rvslj"]
+[ext_resource type="Script" uid="uid://uxoed6gc20gs" path="res://scripts/PlayerHand.gd" id="2_rvslj"]
+[ext_resource type="Script" uid="uid://p8evnt5tinbi" path="res://scenes/Deck.gd" id="3_vcsgt"]
+[ext_resource type="Texture2D" uid="uid://bsr2nidd6pxwm" path="res://assets/PC _ Computer - Balatro - Playing Cards - Card Backs, Enhancers and Seals.png" id="4_c01mt"]
+[ext_resource type="Script" uid="uid://c7oif0iu8su4u" path="res://scenes/InputManager.gd" id="5_nxtc6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlsqs"]
+atlas = ExtResource("4_c01mt")
+region = Rect2(1, 1, 69, 93)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rvslj"]
+size = Vector2(68, 93)
 
 [node name="Main" type="Node2D" unique_id=174701204]
 
@@ -10,3 +20,19 @@ script = ExtResource("1_rvslj")
 
 [node name="PlayerHand" type="Node2D" parent="." unique_id=1148707022]
 script = ExtResource("2_rvslj")
+
+[node name="Deck" type="Node2D" parent="." unique_id=1058624422]
+position = Vector2(150, 500)
+script = ExtResource("3_vcsgt")
+
+[node name="Sprite2D" type="Sprite2D" parent="Deck" unique_id=335777525]
+texture = SubResource("AtlasTexture_jlsqs")
+
+[node name="Area2D" type="Area2D" parent="Deck" unique_id=1059723784]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D" unique_id=1370768321]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_rvslj")
+
+[node name="InputManager" type="Node2D" parent="." unique_id=420829206]
+script = ExtResource("5_nxtc6")
