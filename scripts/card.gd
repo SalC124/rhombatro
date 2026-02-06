@@ -8,6 +8,19 @@ signal speed_changed(card: Node2D, speed: float)
 
 var prev_x: float
 var starting_position
+
+var rank: int
+var suit: int
+@onready var sprite: Sprite2D = $CardImage
+
+func setup(r: int, s: int):
+	rank = r
+	suit = s
+
+	sprite.region_enabled = true
+	sprite.texture = preload("res://assets/notbalatro.png")
+	sprite.region_rect = Rect2((r-2)*71, s*95, 71, 95)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# All cards must be a child of CardManager or this will err
