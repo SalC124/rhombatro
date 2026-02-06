@@ -4,10 +4,10 @@ signal left_mouse_button_clicked
 signal left_mouse_button_released
 
 const COLLISION_MASK_CARD = 1
-const COLLISION_MASK_DECK = 2
+const COLLISION_MASK_DECK = 4
 
 var card_manager_reference
-var deck_reference 
+var deck_reference
 
 func _ready() -> void:
 	card_manager_reference = $"../CardManager"
@@ -35,4 +35,3 @@ func raycast_at_cursor():
 				card_manager_reference.start_drag(card_found)
 		elif result_collision_mask == COLLISION_MASK_DECK:
 			deck_reference.draw_card()
-		

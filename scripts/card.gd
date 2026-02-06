@@ -1,6 +1,6 @@
 extends Node2D
 
-const CardTypes = preload("res://scripts/card_types.gd")
+const CARD_STATES = preload("res://scripts/card_states.gd")
 
 signal hovered(card: Node2D)
 signal hovered_off(card: Node2D)

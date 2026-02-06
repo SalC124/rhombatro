@@ -1,8 +1,8 @@
 extends Node2D
 
-const CardTypes = preload("res://scripts/card_types.gd")
-
 const COLLISION_MASK_CARD = 1
+const DEFAULT_CARD_MOVE_SPEED = preload("res://scripts/card_states.gd").DEFAULT_CARD_MOVE_SPEED
+
 
 var screen_size
 var value: int
@@ -29,16 +29,6 @@ func _process(_delta: float) -> void:
 		# Smooth follow instead of instant snap
 		card_being_dragged.position = card_being_dragged.position.lerp(target_pos, DRAG_SMOOTHNESS)
 
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var card = raycast_check_for_card()
-			if card:
-				start_drag(card)
-		else:
-			if card_being_dragged:
-				finish_drag()
-
 
 func start_drag(card):
 	card_being_dragged = card
@@ -47,11 +37,11 @@ func start_drag(card):
 
 func finish_drag():
 	card_being_dragged.scale = Vector2(1.05,1.05)
-	
+
 	# logic for slots if we did them lmao
-	
-	player_hand_reference.add_card_to_hand(card_being_dragged)
-	
+
+	player_hand_reference.add_card_to_hand(card_being_dragged, 0.2)
+
 	card_being_dragged = null
 
 
@@ -59,6 +49,12 @@ func connect_card_signals(card):
 	card.connect("hovered", on_hovered_over_card)
 	card.connect("hovered_off", on_hovered_off_card)
 	card.connect("speed_changed", on_speed_changed_card)
+
+
+func on_left_click_released():
+	if card_being_dragged:
+		finish_drag()
+
 
 func on_hovered_over_card(card):
 	if !is_hovering_on_card:
@@ -78,7 +74,7 @@ func on_hovered_off_card(card):
 			is_hovering_on_card = false
 
 func on_speed_changed_card(card, speed):
-	const MAX_TILT = 35.0
+	const MAX_TILT = 22.5
 	const MAX_SPEED = 50.0
 	const MIN_DURATION = 0.05
 	const MAX_DURATION = 0.1
@@ -97,7 +93,7 @@ func highlight_card(card, hovered):
 		card.scale = Vector2(1.05, 1.05)
 		card.z_index = 2
 	else:
-		card.scale = Vector2(1, 1.)
+		card.scale = Vector2(1, 1)
 		card.z_index = 1
 
 func raycast_check_for_card():
@@ -105,7 +101,6 @@ func raycast_check_for_card():
 	var parameters = PhysicsPointQueryParameters2D.new()
 	parameters.position= get_global_mouse_position()
 	parameters.collide_with_areas = true
-	parameters.collision_mask = COLLISION_MASK_CARD
 	var result = space_state.intersect_point(parameters)
 	if result.size()>0:
 		#return result[0].collider.get_parent()
@@ -123,6 +118,3 @@ func get_card_with_highest_z_index(cards):
 			highest_z_card = current_card
 			highest_z_index = current_card.z_index
 	return highest_z_card
-	
-func on_left_click_released():
-	print("bruh")
