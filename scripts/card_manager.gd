@@ -11,6 +11,9 @@ var card_being_dragged
 var is_hovering_on_card
 var player_hand_reference
 
+var relative_mouse_pos	# position of mouse on the card so that
+						# clicking on a corner wont move the card there
+
 # Drag lag settings
 const DRAG_SMOOTHNESS = 0.25  # Lower = more lag (0.1-0.3 is good range)
 
@@ -21,7 +24,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if card_being_dragged:
-		var mouse_pos = get_global_mouse_position()
+		var mouse_pos = get_global_mouse_position() - relative_mouse_pos
 		var target_pos = Vector2(
 			clamp(mouse_pos.x, 0, screen_size.x),
 			clamp(mouse_pos.y, 0, screen_size.y)
@@ -32,6 +35,7 @@ func _process(_delta: float) -> void:
 
 func start_drag(card):
 	card_being_dragged = card
+	relative_mouse_pos = card.get_local_mouse_position() # on the card
 	card.scale = Vector2(1,1)
 
 
