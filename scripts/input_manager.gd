@@ -2,6 +2,8 @@ extends Node2D
 
 signal left_mouse_button_clicked
 signal left_mouse_button_released
+signal right_mouse_button_clicked
+signal right_mouse_button_released
 
 const COLLISION_MASK_CARD := 1
 const COLLISION_MASK_DECK := 4
@@ -17,12 +19,12 @@ func _ready() -> void:
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			emit_signal("left_mouse_button_clicked")
-			raycast_at_cursor()
-		else:
-			emit_signal("left_mouse_button_released")
+			raycast_at_cursor(event)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.pressed:
+			raycast_at_cursor(event)
 
-func raycast_at_cursor():
+func raycast_at_cursor(input):
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
 	parameters.position= get_global_mouse_position()
@@ -33,6 +35,9 @@ func raycast_at_cursor():
 		if result_collision_mask == COLLISION_MASK_CARD:
 			var card_found = result[0].collider.get_parent()
 			if card_found:
-				card_manager_reference.start_drag(card_found)
+				if input.button_index == MOUSE_BUTTON_LEFT:
+					card_manager_reference.start_drag(card_found)
+				elif input.button_index == MOUSE_BUTTON_RIGHT:
+					card_found.discard()
 		elif result_collision_mask == COLLISION_MASK_DECK:
 			deck_reference.draw_card(DEFAULT_HAND_SIZE)
