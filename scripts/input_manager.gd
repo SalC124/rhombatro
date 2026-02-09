@@ -20,6 +20,8 @@ func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			raycast_at_cursor(event)
+		else:
+			emit_signal("left_mouse_button_released")
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		if event.pressed:
 			raycast_at_cursor(event)

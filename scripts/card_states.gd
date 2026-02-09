@@ -1,7 +1,7 @@
 extends Resource
 
-const CARD_DRAW_SPEED: float = 0.5
-const DEFAULT_CARD_MOVE_SPEED: float = 0.1
+const CARD_DRAW_SPEED: float = 0.3
+const DEFAULT_CARD_MOVE_SPEED: float = 0.5
 
 enum SUIT {
 	Heart = 0,
