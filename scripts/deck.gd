@@ -15,17 +15,18 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func draw_card():
-	var card_drawn = player_deck[0]
-	player_deck.erase(card_drawn)
+func draw_card(player_hand_size):
+	while $"../PlayerHand".get_cards_in_hand().size() < player_hand_size:
+		var card_drawn = player_deck[0]
+		player_deck.erase(card_drawn)
 
-	if player_deck.size() == 0:
-		$Area2D/CollisionShape2D.disabled = true
-		$Sprite2D.visible = false
+		if player_deck.size() == 0:
+			$Area2D/CollisionShape2D.disabled = true
+			$Sprite2D.visible = false
 
-	var card_scene = preload(CARD_SCENE_PATH)
-	var new_card = card_scene.instantiate()
-	$"../CardManager".add_child(new_card)
-	new_card.setup(card_drawn[0], card_drawn[1])
-	new_card.name = "Caehrd"
-	$"../PlayerHand".add_card_to_hand(new_card, CARD_STATES.CARD_DRAW_SPEED)
+		var card_scene = preload(CARD_SCENE_PATH)
+		var new_card = card_scene.instantiate()
+		$"../CardManager".add_child(new_card)
+		new_card.setup(card_drawn[0], card_drawn[1])
+		new_card.name = "Caehrd"
+		$"../PlayerHand".add_card_to_hand(new_card, CARD_STATES.CARD_DRAW_SPEED)

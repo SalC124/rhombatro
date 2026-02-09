@@ -4,7 +4,7 @@ const CARD_WIDTH = 100
 const HAND_Y_POSITION = 500
 const DEFAULT_CARD_MOVE_SPEED = 0.5
 
-var player_hand = []
+var player_hand := []
 var center_screen_x
 
 # Called when the node enters the scene tree for the first time.
@@ -40,6 +40,10 @@ func remove_card_from_hand(card):
 	if card in player_hand:
 		player_hand.erase(card)
 		update_hand_positions(DEFAULT_CARD_MOVE_SPEED)
+
+
+func get_cards_in_hand() -> Array:
+	return player_hand
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

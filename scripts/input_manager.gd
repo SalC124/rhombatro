@@ -3,8 +3,9 @@ extends Node2D
 signal left_mouse_button_clicked
 signal left_mouse_button_released
 
-const COLLISION_MASK_CARD = 1
-const COLLISION_MASK_DECK = 4
+const COLLISION_MASK_CARD := 1
+const COLLISION_MASK_DECK := 4
+const DEFAULT_HAND_SIZE := preload("res://scripts/card_states.gd").DEFAULT_HAND_SIZE
 
 var card_manager_reference
 var deck_reference
@@ -34,4 +35,4 @@ func raycast_at_cursor():
 			if card_found:
 				card_manager_reference.start_drag(card_found)
 		elif result_collision_mask == COLLISION_MASK_DECK:
-			deck_reference.draw_card()
+			deck_reference.draw_card(DEFAULT_HAND_SIZE)

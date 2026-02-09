@@ -1,7 +1,7 @@
 extends Resource
 
-const CARD_DRAW_SPEED = 0.5
-const DEFAULT_CARD_MOVE_SPEED = 0.1
+const CARD_DRAW_SPEED: float = 0.5
+const DEFAULT_CARD_MOVE_SPEED: float = 0.1
 
 enum SUIT {
 	Heart = 0,
@@ -13,3 +13,5 @@ enum SUIT {
 enum RANK {
 
 }
+
+const DEFAULT_HAND_SIZE: int = 8

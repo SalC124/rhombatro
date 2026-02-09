@@ -76,7 +76,7 @@ func on_hovered_off_card(card):
 func on_speed_changed_card(card, speed):
 	const MAX_TILT = 22.5
 	const MAX_SPEED = 50.0
-	const MIN_DURATION = 0.05
+	const MIN_DURATION = 0.01
 	const MAX_DURATION = 0.1
 
 	var speed_abs = abs(speed)
