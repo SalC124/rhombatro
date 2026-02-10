@@ -20,7 +20,14 @@ func add_card_to_hand(card, speed):
 		update_hand_positions(speed)
 	else:
 		var tween = animate_card_to_position(card, card.starting_position, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
-		tween.finished.connect(func(): update_hand_positions(speed)) # needs to use the new indexing z_index instead
+		tween.finished.connect(func(): ligma_atp(speed)) # needs to use the new indexing z_index instead
+
+
+func ligma_atp(speed):
+	update_hand_positions(speed)
+	for card in player_hand:
+		$"../CardManager".highlight_card(card, false)
+
 
 func update_hand_positions(speed):
 	for i in range(player_hand.size()):
