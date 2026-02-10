@@ -1,7 +1,7 @@
 extends Node2D
 
 const COLLISION_MASK_CARD = 1
-const DEFAULT_CARD_MOVE_SPEED = preload("res://scripts/card_states.gd").DEFAULT_CARD_MOVE_SPEED
+const CARD_STATES = preload("res://scripts/card_states.gd")
 
 
 var screen_size
@@ -14,8 +14,6 @@ var player_hand_reference
 var relative_mouse_pos	# position of mouse on the card so that
 						# clicking on a corner wont move the card there
 
-# Drag lag settings
-const DRAG_SMOOTHNESS = 0.25  # Lower = more lag (0.1-0.3 is good range)
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
@@ -30,13 +28,13 @@ func _process(_delta: float) -> void:
 			clamp(mouse_pos.y, 0, screen_size.y)
 		)
 		# Smooth follow instead of instant snap
-		card_being_dragged.position = card_being_dragged.position.lerp(target_pos, DRAG_SMOOTHNESS)
+		card_being_dragged.position = card_being_dragged.position.lerp(target_pos, CARD_STATES.DRAG_SMOOTHNESS)
 
 
 func start_drag(card):
 	card_being_dragged = card
 	relative_mouse_pos = card.get_local_mouse_position() # on the card
-	card.z_index = 10
+	card.z_index = CARD_STATES.CARD_DRAG_Z_INDEX
 	card.scale = Vector2(2,2)
 
 
@@ -45,7 +43,7 @@ func finish_drag():
 
 	# logic for slots if we did them lmao
 
-	player_hand_reference.add_card_to_hand(card_being_dragged, 0.2)
+	player_hand_reference.add_card_to_hand(card_being_dragged, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
 
 	card_being_dragged = null
 
@@ -98,8 +96,10 @@ func on_speed_changed_card(card, speed):
 func highlight_card(card, hovered):
 	if hovered:
 		card.scale = Vector2(2.1, 2.1)
+		card.z_index = CARD_STATES.BASE_HOVER_Z_INDEX
 	else:
 		card.scale = Vector2(2, 2)
+		card.z_index = card.zed_index
 
 
 func raycast_check_for_card():

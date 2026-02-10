@@ -4,7 +4,6 @@ const CARD_STATES = preload("res://scripts/card_states.gd")
 
 const CARD_WIDTH = 100
 const HAND_Y_POSITION = 500
-const DEFAULT_CARD_MOVE_SPEED = 0.5
 
 var player_hand: Array = []
 var center_screen_x
@@ -21,9 +20,14 @@ func add_card_to_hand(card, speed):
 		update_hand_positions(speed)
 	else:
 		var tween = animate_card_to_position(card, card.starting_position, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
-		tween.finished.connect(func(): card.z_index = 1)
+		tween.finished.connect(func(): update_hand_positions(speed)) # needs to use the new indexing z_index instead
 
 func update_hand_positions(speed):
+	for i in range(player_hand.size()):
+		var new_z = CARD_STATES.BASE_CARD_Z_INDEX + (2*i) # 2 layers per card (face + outline)
+		player_hand[i].z_index = new_z
+		player_hand[i].zed_index = new_z
+
 	for i in range(player_hand.size()):
 		var new_position = Vector2(calculate_card_position(i), HAND_Y_POSITION)
 		var card= player_hand[i]
@@ -43,7 +47,7 @@ func animate_card_to_position(card, new_position, speed):
 func remove_card_from_hand(card):
 	if card in player_hand:
 		player_hand.erase(card)
-		update_hand_positions(0.067)
+		update_hand_positions(CARD_STATES.CARD_DRAW_SPEED)
 
 
 func get_cards_in_hand() -> Array:
@@ -51,4 +55,13 @@ func get_cards_in_hand() -> Array:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	pass
+	debug_card_indeces()
+
+
+func debug_card_indeces():
+	var cards = get_cards_in_hand()
+	var fmted_string = ""
+	for card in cards:
+		fmted_string += "c:" + str(cards.find(card)) + ",zi:" + str(card.z_index) + " "
+
+	print(fmted_string)

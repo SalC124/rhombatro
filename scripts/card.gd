@@ -14,6 +14,8 @@ var suit: int
 @onready var card_image: Sprite2D = $CardImage
 @onready var card_outline: Sprite2D = $CardOutline
 
+var zed_index: int
+
 func setup(r: int, s: int):
 	rank = r
 	suit = s
@@ -26,9 +28,9 @@ func setup(r: int, s: int):
 	card_outline.texture = load("res://assets/notbalatrooutlines.png")
 	card_outline.region_rect = Rect2((1)*71, 0*95, 71, 95)
 
-	self.z_as_relative = true
-	card_image.z_index = 1
-	card_outline.z_index = 0
+	self.z_as_relative = false
+	card_image.z_index = CARD_STATES.BASE_CARD_Z_INDEX + 1
+	card_outline.z_index = CARD_STATES.BASE_CARD_Z_INDEX
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
