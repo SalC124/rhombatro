@@ -18,6 +18,8 @@ script = ExtResource("1_tgmmg")
 texture_filter = 1
 texture = SubResource("AtlasTexture_tgmmg")
 
+[node name="CardOutline" type="Sprite2D" parent="." unique_id=945920391]
+
 [node name="Area2D" type="Area2D" parent="." unique_id=1622486908]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1739295844]

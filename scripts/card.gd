@@ -11,15 +11,24 @@ var starting_position
 
 var rank: int
 var suit: int
-@onready var sprite: Sprite2D = $CardImage
+@onready var card_image: Sprite2D = $CardImage
+@onready var card_outline: Sprite2D = $CardOutline
 
 func setup(r: int, s: int):
 	rank = r
 	suit = s
 
-	sprite.region_enabled = true
-	sprite.texture = preload("res://assets/notbalatro.png")
-	sprite.region_rect = Rect2((r-2)*71, s*95, 71, 95)
+	card_image.region_enabled = true
+	card_image.texture = load("res://assets/notbalatro.png")
+	card_image.region_rect = Rect2((r-2)*71, s*95, 71, 95)
+
+	card_outline.region_enabled = true
+	card_outline.texture = load("res://assets/notbalatrooutlines.png")
+	card_outline.region_rect = Rect2((1)*71, 0*95, 71, 95)
+
+	self.z_as_relative = true
+	card_image.z_index = 1
+	card_outline.z_index = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -54,4 +63,5 @@ func _on_area_2d_mouse_exited() -> void:
 func discard():
 	$Area2D/CollisionShape2D.disabled = true
 	$CardImage.visible = false
+	$CardOutline.visible = false
 	$"../../PlayerHand".remove_card_from_hand(self)

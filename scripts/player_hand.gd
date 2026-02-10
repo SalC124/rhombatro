@@ -20,7 +20,8 @@ func add_card_to_hand(card, speed):
 		player_hand.insert(0,card)
 		update_hand_positions(speed)
 	else:
-		animate_card_to_position(card, card.starting_position, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+		var tween = animate_card_to_position(card, card.starting_position, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+		tween.finished.connect(func(): card.z_index = 1)
 
 func update_hand_positions(speed):
 	for i in range(player_hand.size()):
@@ -37,6 +38,7 @@ func calculate_card_position(index):
 func animate_card_to_position(card, new_position, speed):
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", new_position, speed)
+	return tween # 'tween.finished.... in add_card... relies on this
 
 func remove_card_from_hand(card):
 	if card in player_hand:

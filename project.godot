@@ -24,6 +24,8 @@ window/size/initial_position_type=0
 window/size/resizable=false
 window/size/borderless=true
 window/size/sharp_corners=true
+window/stretch/mode="canvas_items"
+window/stretch/scale_mode="integer"
 
 [physics]
 
@@ -33,3 +35,4 @@ window/size/sharp_corners=true
 
 rendering_device/driver.windows="d3d12"
 viewport/hdr_2d=true
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

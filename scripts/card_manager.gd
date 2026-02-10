@@ -36,6 +36,7 @@ func _process(_delta: float) -> void:
 func start_drag(card):
 	card_being_dragged = card
 	relative_mouse_pos = card.get_local_mouse_position() # on the card
+	card.z_index = 10
 	card.scale = Vector2(2,2)
 
 
@@ -60,8 +61,6 @@ func on_left_click_released():
 		finish_drag()
 
 
-
-
 func on_hovered_over_card(card):
 	if !is_hovering_on_card:
 		is_hovering_on_card = true
@@ -79,6 +78,7 @@ func on_hovered_off_card(card):
 		else:
 			is_hovering_on_card = false
 
+
 func on_speed_changed_card(card, speed):
 	const MAX_TILT = 22.5
 	const MAX_SPEED = 50.0
@@ -94,13 +94,13 @@ func on_speed_changed_card(card, speed):
 	var tween = create_tween()
 	tween.tween_property(card, "rotation_degrees", tilt_angle, duration)
 
+
 func highlight_card(card, hovered):
 	if hovered:
 		card.scale = Vector2(2.1, 2.1)
-		card.z_index = 2
 	else:
 		card.scale = Vector2(2, 2)
-		card.z_index = 1
+
 
 func raycast_check_for_card():
 	var space_state = get_world_2d().direct_space_state

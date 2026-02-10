@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://cvrfd1rl7qiea"]
 
+[ext_resource type="Script" uid="uid://bw28n52jd4rc0" path="res://scripts/main.gd" id="1_nxtc6"]
 [ext_resource type="Script" uid="uid://davr8dw2xo6sd" path="res://scripts/card_manager.gd" id="1_rvslj"]
 [ext_resource type="Script" uid="uid://uxoed6gc20gs" path="res://scripts/player_hand.gd" id="2_rvslj"]
 [ext_resource type="Script" uid="uid://p8evnt5tinbi" path="res://scripts/deck.gd" id="3_vcsgt"]
 [ext_resource type="Texture2D" uid="uid://bsr2nidd6pxwm" path="res://assets/PC _ Computer - Balatro - Playing Cards - Card Backs, Enhancers and Seals.png" id="4_c01mt"]
 [ext_resource type="Script" uid="uid://c7oif0iu8su4u" path="res://scripts/input_manager.gd" id="5_nxtc6"]
+[ext_resource type="Texture2D" uid="uid://b0r5v4wboeesk" path="res://assets/rhombatroBg.png" id="6_c01mt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jlsqs"]
 atlas = ExtResource("4_c01mt")
@@ -15,6 +17,7 @@ size = Vector2(68, 93)
 
 [node name="Main" type="Node2D" unique_id=174701204]
 texture_filter = 1
+script = ExtResource("1_nxtc6")
 
 [node name="CardManager" type="Node2D" parent="." unique_id=976822695]
 script = ExtResource("1_rvslj")
@@ -43,3 +46,9 @@ shape = SubResource("RectangleShape2D_rvslj")
 [node name="InputManager" type="Node2D" parent="." unique_id=420829206]
 scale = Vector2(2, 2)
 script = ExtResource("5_nxtc6")
+
+[node name="BackgroundImage" type="Sprite2D" parent="." unique_id=128025320]
+z_index = -1
+z_as_relative = false
+texture = ExtResource("6_c01mt")
+centered = false
