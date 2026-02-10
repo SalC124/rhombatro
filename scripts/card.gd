@@ -16,6 +16,8 @@ var suit: int
 
 var zed_index: int
 
+var y_offset: int = 0
+
 func setup(r: int, s: int):
 	rank = r
 	suit = s

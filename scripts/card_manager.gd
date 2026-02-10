@@ -14,6 +14,10 @@ var player_hand_reference
 var relative_mouse_pos	# position of mouse on the card so that
 						# clicking on a corner wont move the card there
 
+var first_click_pos
+
+signal select(card: Node2D)
+
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
@@ -36,6 +40,7 @@ func start_drag(card):
 	relative_mouse_pos = card.get_local_mouse_position() # on the card
 	card.z_index = CARD_STATES.CARD_DRAG_Z_INDEX
 	card.scale = Vector2(2,2)
+	first_click_pos = get_global_mouse_position()
 
 
 func finish_drag():
@@ -43,7 +48,20 @@ func finish_drag():
 
 	# logic for slots if we did them lmao
 
-	player_hand_reference.add_card_to_hand(card_being_dragged, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+	player_hand_reference.add_card_to_hand(card_being_dragged, CARD_STATES.CARD_DRAW_SPEED)
+
+
+	var glob_mos = get_global_mouse_position()
+	if (
+		(
+			(first_click_pos.x - 10) < glob_mos.x
+			and (first_click_pos.x + 10) > glob_mos.x
+		) and (
+			(first_click_pos.y - 10) < glob_mos.y
+			and (first_click_pos.y + 10) > glob_mos.y
+		)
+	):
+		emit_signal("select", card_being_dragged)
 
 	card_being_dragged = null
 

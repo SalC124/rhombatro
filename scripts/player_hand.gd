@@ -3,15 +3,31 @@ extends Node2D
 const CARD_STATES = preload("res://scripts/card_states.gd")
 
 const CARD_WIDTH = 100
-const HAND_Y_POSITION = 500
 
 var player_hand: Array = []
 var center_screen_x
 
+var selected_cards: Array = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	center_screen_x = get_viewport().size.x / 2
+	$"../CardManager".connect("select", on_select)
 
+func on_select(card):
+	print("on select")
+	toggle_card_select(card)
+
+
+func toggle_card_select(card):
+	if card.y_offset == 0:
+		if selected_cards.size() < CARD_STATES.MAX_PLAYED_HAND_SIZE:
+			selected_cards.append(card)
+			card.y_offset = CARD_STATES.SELECTION_Y_OFFSET
+	else:
+		selected_cards.erase(card)
+		card.y_offset = 0
+	print(selected_cards)
 
 
 func add_card_to_hand(card, speed):
@@ -20,13 +36,11 @@ func add_card_to_hand(card, speed):
 		update_hand_positions(speed)
 	else:
 		var tween = animate_card_to_position(card, card.starting_position, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
-		tween.finished.connect(func(): ligma_atp(speed)) # needs to use the new indexing z_index instead
-
-
-func ligma_atp(speed):
-	update_hand_positions(speed)
-	for card in player_hand:
-		$"../CardManager".highlight_card(card, false)
+		tween.finished.connect(func():
+			update_hand_positions(speed)
+			for caehrd in player_hand:
+				$"../CardManager".highlight_card(caehrd, false)
+) # needs to use the new indexing z_index instead
 
 
 func update_hand_positions(speed):
@@ -36,8 +50,8 @@ func update_hand_positions(speed):
 		player_hand[i].zed_index = new_z
 
 	for i in range(player_hand.size()):
-		var new_position = Vector2(calculate_card_position(i), HAND_Y_POSITION)
-		var card= player_hand[i]
+		var new_position = Vector2(calculate_card_position(i), CARD_STATES.HAND_Y_POSITION - player_hand[i].y_offset)
+		var card = player_hand[i]
 		card.starting_position = new_position
 		animate_card_to_position(card, new_position, speed)
 
