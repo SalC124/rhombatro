@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if card_being_dragged:
-		var mouse_pos = get_global_mouse_position() - relative_mouse_pos
+		var mouse_pos = get_global_mouse_position() - (relative_mouse_pos * 2) # times 2 for scale of 2
 		var target_pos = Vector2(
 			clamp(mouse_pos.x, 0, screen_size.x),
 			clamp(mouse_pos.y, 0, screen_size.y)
@@ -36,11 +36,11 @@ func _process(_delta: float) -> void:
 func start_drag(card):
 	card_being_dragged = card
 	relative_mouse_pos = card.get_local_mouse_position() # on the card
-	card.scale = Vector2(1,1)
+	card.scale = Vector2(2,2)
 
 
 func finish_drag():
-	card_being_dragged.scale = Vector2(1.05,1.05)
+	card_being_dragged.scale = Vector2(2.1,2.1)
 
 	# logic for slots if we did them lmao
 
@@ -96,10 +96,10 @@ func on_speed_changed_card(card, speed):
 
 func highlight_card(card, hovered):
 	if hovered:
-		card.scale = Vector2(1.05, 1.05)
+		card.scale = Vector2(2.1, 2.1)
 		card.z_index = 2
 	else:
-		card.scale = Vector2(1, 1)
+		card.scale = Vector2(2, 2)
 		card.z_index = 1
 
 func raycast_check_for_card():

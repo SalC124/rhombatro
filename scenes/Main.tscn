@@ -20,10 +20,12 @@ texture_filter = 1
 script = ExtResource("1_rvslj")
 
 [node name="PlayerHand" type="Node2D" parent="." unique_id=1148707022]
+scale = Vector2(2, 2)
 script = ExtResource("2_rvslj")
 
 [node name="Deck" type="Node2D" parent="." unique_id=1058624422]
 position = Vector2(150, 500)
+scale = Vector2(2, 2)
 script = ExtResource("3_vcsgt")
 
 [node name="Sprite2D" type="Sprite2D" parent="Deck" unique_id=335777525]
@@ -39,4 +41,5 @@ position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_rvslj")
 
 [node name="InputManager" type="Node2D" parent="." unique_id=420829206]
+scale = Vector2(2, 2)
 script = ExtResource("5_nxtc6")
