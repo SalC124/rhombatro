@@ -12,23 +12,7 @@ var selected_cards: Array = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	center_screen_x = get_viewport().size.x / 2
-	$"../CardManager".connect("select", on_select)
-
-func on_select(card):
-	print("on select")
-	toggle_card_select(card)
-
-
-func toggle_card_select(card):
-	if card.y_offset == 0:
-		if selected_cards.size() < CARD_STATES.MAX_PLAYED_HAND_SIZE:
-			selected_cards.append(card)
-			card.y_offset = CARD_STATES.SELECTION_Y_OFFSET
-	else:
-		selected_cards.erase(card)
-		card.y_offset = 0
-	print(selected_cards)
-
+	
 
 func add_card_to_hand(card, speed):
 	if card not in evil_player_hand:
@@ -59,7 +43,7 @@ func calculate_card_position(index):
 	
 	center_screen_x = get_viewport().size.x / 2
 	var total_width = (evil_player_hand.size()-1)*CARD_STATES.CARD_WIDTH
-	var x_offset = center_screen_x + index * CARD_STATES.CARD_WIDTH - total_width / 2
+	var x_offset = center_screen_x - index * CARD_STATES.CARD_WIDTH + total_width / 2
 	return x_offset
 
 func animate_card_to_position(card, new_position, speed):
