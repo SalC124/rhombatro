@@ -10,6 +10,7 @@ var suit: int
 var card_being_dragged
 var is_hovering_on_card
 var player_hand_reference
+var center_screen_x = 0
 
 var relative_mouse_pos	# position of mouse on the card so that
 						# clicking on a corner wont move the card there

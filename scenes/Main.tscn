@@ -7,7 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://bsr2nidd6pxwm" path="res://assets/PC _ Computer - Balatro - Playing Cards - Card Backs, Enhancers and Seals.png" id="4_c01mt"]
 [ext_resource type="Script" uid="uid://c7oif0iu8su4u" path="res://scripts/input_manager.gd" id="5_nxtc6"]
 [ext_resource type="Texture2D" uid="uid://b0r5v4wboeesk" path="res://assets/rhombatroBg.png" id="6_c01mt"]
-[ext_resource type="Script" uid="uid://ducw4b54vx8j0" path="res://scripts/PointCalc.gd" id="8_jlsqs"]
+[ext_resource type="Script" uid="uid://dd8i0dnsqivr" path="res://scripts/GameLoop.gd" id="8_jlsqs"]
+[ext_resource type="Script" uid="uid://cw38uibi8wxf0" path="res://scripts/evil_deck.gd" id="8_lhr70"]
+[ext_resource type="Script" uid="uid://dscvdvgmltteo" path="res://scripts/evil_hand.gd" id="9_wp0k4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jlsqs"]
 atlas = ExtResource("4_c01mt")
@@ -15,32 +17,6 @@ region = Rect2(1, 1, 69, 93)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rvslj"]
 size = Vector2(68, 93)
-
-[sub_resource type="FontFile" id="FontFile_jlsqs"]
-cache/0/variation_coordinates = {}
-cache/0/face_index = 0
-cache/0/embolden = 0.0
-cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
-cache/0/spacing_top = 0
-cache/0/spacing_bottom = 0
-cache/0/spacing_space = 0
-cache/0/spacing_glyph = 0
-cache/0/baseline_offset = 0.0
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_q8u5g"]
-
-[sub_resource type="Animation" id="Animation_lhr70"]
-resource_name = "Shop"
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_wp0k4"]
-_data = {
-&"Shop": SubResource("Animation_lhr70")
-}
 
 [node name="Main" type="Node2D" unique_id=174701204]
 texture_filter = 1
@@ -54,7 +30,7 @@ scale = Vector2(2, 2)
 script = ExtResource("2_rvslj")
 
 [node name="Deck" type="Node2D" parent="." unique_id=1058624422]
-position = Vector2(150, 500)
+position = Vector2(150, 1200)
 scale = Vector2(2, 2)
 script = ExtResource("3_vcsgt")
 
@@ -80,21 +56,31 @@ z_as_relative = false
 texture = ExtResource("6_c01mt")
 centered = false
 
-[node name="PointCalc" type="Node2D" parent="." unique_id=536140208]
+[node name="Discard" type="Button" parent="." unique_id=351914031]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="PlayHand" type="Button" parent="." unique_id=1121694894]
+offset_left = 109.0
+offset_top = 776.0
+offset_right = 195.0
+offset_bottom = 807.0
+disabled = true
+text = "Play Hand"
+
+[node name="EvilDeck" type="Node2D" parent="." unique_id=1580041799]
+position = Vector2(2000, 500)
+scale = Vector2(2, 2)
+script = ExtResource("8_lhr70")
+
+[node name="Sprite2D" type="Sprite2D" parent="EvilDeck" unique_id=329160825]
+texture_filter = 1
+texture = SubResource("AtlasTexture_jlsqs")
+
+[node name="EvilHand" type="Node2D" parent="." unique_id=1348576452]
+script = ExtResource("9_wp0k4")
+
+[node name="GameLoop" type="Node" parent="." unique_id=61116979]
 script = ExtResource("8_jlsqs")
 
-[node name="Label" type="Label" parent="PointCalc" unique_id=1518508477]
-offset_left = 2093.0
-offset_top = 92.0
-offset_right = 2454.0
-offset_bottom = 369.0
-theme_override_fonts/font = SubResource("FontFile_jlsqs")
-vertical_alignment = 1
-uppercase = true
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PointCalc" unique_id=921794710]
-sprite_frames = SubResource("SpriteFrames_q8u5g")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="PointCalc/AnimatedSprite2D" unique_id=1765399411]
-root_node = NodePath("../../..")
-libraries/ = SubResource("AnimationLibrary_wp0k4")
+[connection signal="pressed" from="PlayHand" to="GameLoop" method="_on_play_hand_pressed"]

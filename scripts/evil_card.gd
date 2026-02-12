@@ -6,6 +6,7 @@ signal hovered(card: Node2D)
 signal hovered_off(card: Node2D)
 signal speed_changed(card: Node2D, speed: float)
 
+
 var prev_x: float
 var starting_position
 
@@ -13,6 +14,7 @@ var rank: int
 var suit: int
 @onready var card_image: Sprite2D = $CardImage
 @onready var card_outline: Sprite2D = $CardOutline
+@onready var card_butt: Sprite2D = $CardButt
 
 var zed_index: int
 
@@ -29,10 +31,15 @@ func setup(r: int, s: int):
 	card_outline.region_enabled = true
 	card_outline.texture = load("res://assets/notbalatrooutlines.png")
 	card_outline.region_rect = Rect2((1)*71, 0*95, 71, 95)
+	
+	card_butt.region_enabled = true
+	card_butt.texture = load("res://assets/notbalatrooutlines.png")
+	card_butt.region_rect = Rect2((0)*71, 0*95, 71, 95)
 
 	self.z_as_relative = false
-	card_image.z_index = CARD_STATES.BASE_CARD_Z_INDEX + 1
+	card_image.z_index = CARD_STATES.BASE_CARD_Z_INDEX+1
 	card_outline.z_index = CARD_STATES.BASE_CARD_Z_INDEX
+	card_butt.z_index = CARD_STATES.BASE_CARD_Z_INDEX+2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -42,7 +49,6 @@ func _ready() -> void:
 	# if you run as a Card, it'll have no parent of CardManager
 	get_parent().connect_card_signals(self)
 	prev_x = global_position.x
-	position.y = CARD_STATES.HAND_Y_POSITION
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
