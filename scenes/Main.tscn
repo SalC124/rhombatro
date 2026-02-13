@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b0r5v4wboeesk" path="res://assets/rhombatroBg.png" id="6_c01mt"]
 [ext_resource type="Script" uid="uid://dd8i0dnsqivr" path="res://scripts/GameLoop.gd" id="8_jlsqs"]
 [ext_resource type="Script" uid="uid://cw38uibi8wxf0" path="res://scripts/evil_deck.gd" id="8_lhr70"]
+[ext_resource type="Texture2D" uid="uid://chuavorpy20pd" path="res://assets/discard-removebg-preview.png" id="8_wp0k4"]
 [ext_resource type="Script" uid="uid://dscvdvgmltteo" path="res://scripts/evil_hand.gd" id="9_wp0k4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jlsqs"]
@@ -17,6 +18,10 @@ region = Rect2(1, 1, 69, 93)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rvslj"]
 size = Vector2(68, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjd11"]
+atlas = ExtResource("8_wp0k4")
+region = Rect2(173, 154, 174, 224)
 
 [node name="Main" type="Node2D" unique_id=174701204]
 texture_filter = 1
@@ -57,8 +62,12 @@ texture = ExtResource("6_c01mt")
 centered = false
 
 [node name="Discard" type="Button" parent="." unique_id=351914031]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 2241.0
+offset_top = 1076.0
+offset_right = 2423.0
+offset_bottom = 1308.0
+scale = Vector2(0.75, 0.75)
+icon = SubResource("AtlasTexture_bjd11")
 
 [node name="PlayHand" type="Button" parent="." unique_id=1121694894]
 offset_left = 109.0
@@ -83,4 +92,5 @@ script = ExtResource("9_wp0k4")
 [node name="GameLoop" type="Node" parent="." unique_id=61116979]
 script = ExtResource("8_jlsqs")
 
+[connection signal="pressed" from="Discard" to="GameLoop" method="_on_discard_pressed"]
 [connection signal="pressed" from="PlayHand" to="GameLoop" method="_on_play_hand_pressed"]

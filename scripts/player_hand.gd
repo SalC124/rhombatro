@@ -15,7 +15,7 @@ func _ready() -> void:
 	$"../CardManager".connect("select", on_select)
 
 func on_select(card):
-	print("on select")
+	print(card)
 	toggle_card_select(card)
 
 
