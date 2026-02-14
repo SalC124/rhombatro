@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://dd8i0dnsqivr" path="res://scripts/GameLoop.gd" id="8_jlsqs"]
 [ext_resource type="Script" uid="uid://cw38uibi8wxf0" path="res://scripts/evil_deck.gd" id="8_lhr70"]
 [ext_resource type="Texture2D" uid="uid://chuavorpy20pd" path="res://assets/discard-removebg-preview.png" id="8_wp0k4"]
+[ext_resource type="FontFile" uid="uid://b4ucaw12l0s1n" path="res://assets/BigBlueTermPlusNerdFontMono-Regular.ttf" id="9_bjd11"]
 [ext_resource type="Script" uid="uid://dscvdvgmltteo" path="res://scripts/evil_hand.gd" id="9_wp0k4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jlsqs"]
@@ -74,6 +75,7 @@ offset_left = 109.0
 offset_top = 776.0
 offset_right = 195.0
 offset_bottom = 807.0
+theme_override_fonts/font = ExtResource("9_bjd11")
 disabled = true
 text = "Play Hand"
 

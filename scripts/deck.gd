@@ -35,6 +35,7 @@ func draw_card(player_hand_size):
 		$"../CardManager".add_child(new_card)
 		new_card.setup(card_drawn[0], card_drawn[1])
 		new_card.name = "Caehrd"
+		new_card.get_node("Area2D/CollisionShape2D").disabled = true
 		$"../PlayerHand".add_card_to_hand(new_card, CARD_STATES.CARD_DRAW_SPEED)
 		#new_card.get_node("AnimationPlayer").play("caehrd_flip")
 

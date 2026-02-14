@@ -64,6 +64,9 @@ func calculate_card_position(index):
 func animate_card_to_position(card, new_position, speed):
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", new_position, speed)
+	tween.finished.connect(func():
+		card.get_node("Area2D/CollisionShape2D").disabled = false
+	)
 	return tween # 'tween.finished.... in add_card... relies on this
 
 func remove_card_from_hand(card):
