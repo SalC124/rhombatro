@@ -35,7 +35,7 @@ func add_card_to_hand(card, speed):
 		player_hand.insert(0,card)
 		update_hand_positions(speed)
 	else:
-		var tween = animate_card_to_position(card, card.starting_position, CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+		var tween = animate_card_to_position(card, card.starting_position, CARD_STATES.CARD_DRAW_SPEED)
 		tween.finished.connect(func():
 			update_hand_positions(speed)
 			for caehrd in player_hand:
@@ -78,7 +78,8 @@ func get_cards_in_hand() -> Array:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	debug_card_indeces()
+	# debug_card_indeces()
+	pass
 
 
 func debug_card_indeces():
@@ -87,4 +88,4 @@ func debug_card_indeces():
 	for card in cards:
 		fmted_string += "c:" + str(cards.find(card)) + ",zi:" + str(card.z_index) + " "
 
-	#print(fmted_string)
+	print(fmted_string)
