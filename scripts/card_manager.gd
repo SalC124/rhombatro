@@ -27,6 +27,14 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if card_being_dragged:
+		if not is_actually_dragging:
+			var distance = first_click_pos.distance_to(get_global_mouse_position())
+			if distance > drag_threshold:
+				is_actually_dragging = true
+				card_being_dragged.z_index = CARD_STATES.CARD_DRAG_Z_INDEX
+				card_being_dragged.scale = Vector2(2, 2)
+			else:
+				return
 		var mouse_pos = get_global_mouse_position() - (relative_mouse_pos * 2) # times 2 for scale of 2
 		var target_pos = Vector2(
 			clamp(mouse_pos.x, 0, screen_size.x),
@@ -36,12 +44,14 @@ func _process(_delta: float) -> void:
 		card_being_dragged.position = card_being_dragged.position.lerp(target_pos, CARD_STATES.DRAG_SMOOTHNESS)
 
 
+var drag_threshold = 16
+var is_actually_dragging = false
+
 func start_drag(card):
 	card_being_dragged = card
 	relative_mouse_pos = card.get_local_mouse_position() # on the card
-	card.z_index = CARD_STATES.CARD_DRAG_Z_INDEX
-	card.scale = Vector2(2,2)
 	first_click_pos = get_global_mouse_position()
+	is_actually_dragging = false
 
 
 func finish_drag():

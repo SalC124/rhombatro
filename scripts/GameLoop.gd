@@ -33,9 +33,11 @@ func _on_play_hand_pressed() -> void:
 
 func _on_discard_pressed() -> void:
 	while player_hand_ref.selected_cards.size() > 0:
-		for card in player_hand_ref.selected_cards:
-			player_hand_ref.animate_card_to_position(card,Vector2(2500,1600),CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
-			player_hand_ref.selected_cards.erase(card)
-			player_hand_ref.player_hand.erase(card)
-			player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
-			deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+		var card = player_hand_ref.selected_cards[player_hand_ref.selected_cards.size() - 1]
+		player_hand_ref.animate_card_to_position(card, Vector2(2500, 1600), CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+		player_hand_ref.selected_cards.erase(card)
+		player_hand_ref.player_hand.erase(card)
+
+	player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+
+	deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
