@@ -71,6 +71,7 @@ scale = Vector2(0.75, 0.75)
 icon = SubResource("AtlasTexture_bjd11")
 
 [node name="PlayHand" type="Button" parent="." unique_id=1121694894]
+texture_filter = 1
 offset_left = 109.0
 offset_top = 776.0
 offset_right = 195.0
