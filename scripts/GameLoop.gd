@@ -11,9 +11,14 @@ var opponent_played = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$"../PlayHand".disabled=true
+	$"../CardManager".connect("select", button_update)
 
 
 func _process(_delta: float) -> void:
+	pass
+
+
+func button_update(_card):
 	if player_hand_ref.selected_cards.size() == 0:
 		$"../Discard".disabled=true
 		$"../PlayHand".disabled=true
@@ -23,8 +28,7 @@ func _process(_delta: float) -> void:
 			$"../PlayHand".disabled = false
 		else:
 			$"../PlayHand".disabled = true
-	# print(player_hand_ref.rhombuses)
-
+	print(player_hand_ref.rhombuses)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
