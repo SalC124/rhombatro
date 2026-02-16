@@ -8,6 +8,7 @@ var player_hand: Array = []
 var center_screen_x
 
 var selected_cards: Array = []
+var rhombuses: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -17,6 +18,7 @@ func _ready() -> void:
 func on_select(card):
 	print(card)
 	toggle_card_select(card)
+	print("rhombus count: ", rhombuses)
 
 
 func toggle_card_select(card):
@@ -24,10 +26,16 @@ func toggle_card_select(card):
 		if selected_cards.size() < CARD_STATES.MAX_PLAYED_HAND_SIZE:
 			selected_cards.append(card)
 			card.y_offset = CARD_STATES.SELECTION_Y_OFFSET
+			if card.suit == CARD_STATES.SUIT.Diamond:
+				rhombuses += 1
 	else:
 		selected_cards.erase(card)
 		card.y_offset = 0
+		if card.suit == CARD_STATES.SUIT.Diamond:
+			rhombuses -= 1
+
 	print(selected_cards)
+
 
 
 func add_card_to_hand(card, speed):
