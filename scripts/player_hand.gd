@@ -14,9 +14,9 @@ func _ready() -> void:
 	$"../CardManager".connect("select", on_select)
 
 func on_select(card):
-	# print(card)
+	print(card)
 	toggle_card_select(card)
-	# print("rhombus count: ", rhombuses)
+	print("rhombus count: ", rhombuses)
 
 
 func toggle_card_select(card):
@@ -32,7 +32,7 @@ func toggle_card_select(card):
 		if card.suit == CARD_STATES.SUIT.Diamond:
 			rhombuses -= 1
 
-	# print(selected_cards)
+	print(selected_cards)
 
 
 

@@ -70,4 +70,4 @@ func discard():
 	$Area2D/CollisionShape2D.disabled = true
 	$CardImage.visible = false
 	$CardOutline.visible = false
-	$"../../Hand".remove_card_from_hand(self)
+	$"../../PlayerHand".remove_card_from_hand(self)
