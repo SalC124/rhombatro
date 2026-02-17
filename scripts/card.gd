@@ -6,6 +6,8 @@ signal hovered(card: Node2D)
 signal hovered_off(card: Node2D)
 signal speed_changed(card: Node2D, speed: float)
 
+var is_opponent_card: bool = false
+
 var prev_x: float
 var starting_position
 
@@ -33,6 +35,20 @@ func setup(r: int, s: int):
 	self.z_as_relative = false
 	card_image.z_index = CARD_STATES.BASE_CARD_Z_INDEX + 1
 	card_outline.z_index = CARD_STATES.BASE_CARD_Z_INDEX
+
+
+func set_as_opponent_card() -> void:
+	is_opponent_card = true
+	$CardButt.visible = true
+	$CardButt.z_index = CARD_STATES.BASE_CARD_Z_INDEX + 2
+	$CardImage.z_index = CARD_STATES.BASE_CARD_Z_INDEX - 1
+	$Area2D/CollisionShape2D.disabled = true
+	$Area2D.collision_layer = 0
+	$Area2D.collision_mask = 0
+
+func reveal_opp_card() -> void:
+	$AnimationPlayer.play("caehrd_flip") # TODO: lok in naste
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
