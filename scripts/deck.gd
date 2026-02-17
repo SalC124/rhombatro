@@ -25,6 +25,7 @@ func draw_here_and_for_clients_opponent(player_id):
 			draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
 	else:
 		get_parent().get_parent().get_node("EvilField/EvilDeck").draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+	print("bruh")
 
 func deck_clicked():
 	var player_id = multiplayer.get_unique_id()
