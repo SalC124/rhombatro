@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://csufx5wgl0now"]
+
+[ext_resource type="Script" uid="uid://dustsl58d4kjq" path="res://scripts/evil_card.gd" id="1_6hfkb"]
+[ext_resource type="Texture2D" uid="uid://boh3ipnb60jh4" path="res://assets/notbalatro.png" id="2_4rp4s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgmmg"]
+atlas = ExtResource("2_4rp4s")
+region = Rect2(0, 0, 71, 95)
+
+[node name="Card" type="Node2D" unique_id=104600597]
+position = Vector2(2000, 500)
+scale = Vector2(2, 2)
+script = ExtResource("1_6hfkb")
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1109281394]
+texture_filter = 1
+texture = SubResource("AtlasTexture_tgmmg")
+
+[node name="CardOutline" type="Sprite2D" parent="." unique_id=945920391]
+
+[node name="CardButt" type="Sprite2D" parent="." unique_id=1603706828]

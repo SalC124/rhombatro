@@ -24,7 +24,7 @@ func draw_here_and_for_clients_opponent(player_id):
 	if multiplayer.get_unique_id() == player_id:
 			draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
 	else:
-		get_parent().get_parent().get_node("EvilField/Deck").draw_card(CARD_STATES.DEFAULT_HAND_SIZE, true)
+		get_parent().get_parent().get_node("EvilField/Deck").draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
 	# print("bruh")
 
 func deck_clicked():
@@ -33,7 +33,7 @@ func deck_clicked():
 	rpc("draw_here_and_for_clients_opponent", player_id)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func draw_card(player_hand_size, opponent: bool = false):
+func draw_card(player_hand_size):
 	var cards_to_draw = player_hand_size - $"../Hand".get_cards_in_hand().size()
 
 	for i in range(cards_to_draw):
@@ -52,10 +52,9 @@ func draw_card(player_hand_size, opponent: bool = false):
 		$"../CardManager".add_child(new_card)
 		new_card.setup(card_drawn[0], card_drawn[1])
 		new_card.name = "Caehrd"
-		if opponent:
-			new_card.set_as_opponent_card()
-		else:
-			new_card.get_node("Area2D/CollisionShape2D").disabled = true
+		new_card.get_node("Area2D/CollisionShape2D").disabled = true
 		$"../Hand".add_card_to_hand(new_card, CARD_STATES.CARD_DRAW_SPEED)
-		if i < cards_to_draw - 1:
-			await get_tree().create_timer(0.1).timeout
+		#new_card.get_node("AnimationPlayer").play("caehrd_flip")
+
+		if i < cards_to_draw - 1:  # dont wait after the last card
+			await get_tree().create_timer(0.1).timeout # thanks, claude
