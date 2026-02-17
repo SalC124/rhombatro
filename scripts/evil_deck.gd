@@ -4,6 +4,7 @@ const CARD_SCENE_PATH = "res://scenes/EvilCard.tscn"
 const CARD_STATES = preload("res://scripts/card_states.gd")
 
 var evil_player_deck = []
+var deck_size
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -11,8 +12,7 @@ func _ready() -> void:
 		for j in range(0,4):
 			evil_player_deck.append([i,j])
 	evil_player_deck.shuffle()
-	print(evil_player_deck)
-	draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+	#print(evil_player_deck)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
