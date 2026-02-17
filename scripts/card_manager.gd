@@ -22,8 +22,12 @@ signal select(card: Node2D)
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
-	player_hand_reference = $"../EvilHand"
-#	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
+	if has_node("../PlayerHand"):
+		player_hand_reference = $"../PlayerHand"
+	elif has_node("../EvilHand"):
+		player_hand_reference = $"../EvilHand"
+	if has_node("../InputManager"):
+		$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
 
 func _process(_delta: float) -> void:
 	if card_being_dragged:
