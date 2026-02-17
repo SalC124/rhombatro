@@ -24,22 +24,22 @@ func setup(r: int, s: int):
 	rank = r
 	suit = s
 
-	card_image.region_enabled = true
-	card_image.texture = load("res://assets/notbalatro.png")
-	card_image.region_rect = Rect2((r-2)*71, s*95, 71, 95)
+	$CardImage.region_enabled = true
+	$CardImage.texture = load("res://assets/notbalatro.png")
+	$CardImage.region_rect = Rect2((r-2)*71, s*95, 71, 95)
 
-	card_outline.region_enabled = true
-	card_outline.texture = load("res://assets/notbalatrooutlines.png")
-	card_outline.region_rect = Rect2((1)*71, 0*95, 71, 95)
+	$CardOutline.region_enabled = true
+	$CardOutline.texture = load("res://assets/notbalatrooutlines.png")
+	$CardOutline.region_rect = Rect2((1)*71, 0*95, 71, 95)
 	
-	card_butt.region_enabled = true
-	card_butt.texture = load("res://assets/notbalatrooutlines.png")
-	card_butt.region_rect = Rect2((0)*71, 0*95, 71, 95)
+	$CardButt.region_enabled = true
+	$CardButt.texture = load("res://assets/notbalatrooutlines.png")
+	$CardButt.region_rect = Rect2((0)*71, 0*95, 71, 95)
 
 	self.z_as_relative = false
-	card_image.z_index = CARD_STATES.BASE_CARD_Z_INDEX+1
-	card_outline.z_index = CARD_STATES.BASE_CARD_Z_INDEX
-	card_butt.z_index = CARD_STATES.BASE_CARD_Z_INDEX+2
+	$CardImage.z_index = CARD_STATES.BASE_CARD_Z_INDEX+1
+	$CardOutline.z_index = CARD_STATES.BASE_CARD_Z_INDEX
+	$CardButt.z_index = CARD_STATES.BASE_CARD_Z_INDEX+2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -7,6 +7,7 @@ const CARD_STATES = preload("res://scripts/card_states.gd")
 
 var player_played = false
 var opponent_played = false
+#var opponent_hand = $"../EvilHand".evil_player_hand
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

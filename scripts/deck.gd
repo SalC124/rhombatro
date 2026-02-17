@@ -11,9 +11,25 @@ func _ready() -> void:
 		for j in range(0,4):
 			player_deck.append([i,j])
 	player_deck.shuffle()
-	print(player_deck)
+	#print(player_deck)
 	position.y = CARD_STATES.HAND_Y_POSITION
 
+func draw_initial_hand():
+	var player_id = multiplayer.get_unique_id()
+	draw_here_and_for_clients_opponent(player_id)
+	rpc("draw_here_and_for_clients_opponent", player_id)
+		
+@rpc("any_peer")
+func draw_here_and_for_clients_opponent(player_id):
+	if multiplayer.get_unique_id() == player_id:
+			draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+	else:
+		get_parent().get_parent().get_node("EvilField/EvilDeck").draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+
+func deck_clicked():
+	var player_id = multiplayer.get_unique_id()
+	draw_here_and_for_clients_opponent(player_id)
+	rpc("draw_here_and_for_clients_opponent", player_id)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func draw_card(player_hand_size):
