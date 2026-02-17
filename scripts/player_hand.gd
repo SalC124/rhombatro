@@ -2,6 +2,8 @@ extends Node2D
 
 const CARD_STATES = preload("res://scripts/card_states.gd")
 
+const CARD_WIDTH = 100
+
 var player_hand: Array = []
 var center_screen_x
 
@@ -39,42 +41,35 @@ func toggle_card_select(card):
 func add_card_to_hand(card, speed):
 	if card not in player_hand:
 		player_hand.insert(0,card)
-		update_hand_positions(speed, player_hand, CARD_STATES.DEFAULT_MAX_SPREAD_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.HAND_Y_POSITION)
+		update_hand_positions(speed)
 	else:
 		var tween = animate_card_to_position(card, card.starting_position, CARD_STATES.CARD_DRAW_SPEED)
 		tween.finished.connect(func():
-			update_hand_positions(speed, player_hand, CARD_STATES.DEFAULT_MAX_SPREAD_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.HAND_Y_POSITION)
+			update_hand_positions(speed)
 			for caehrd in player_hand:
 				$"../CardManager".highlight_card(caehrd, false)
 ) # needs to use the new indexing z_index instead
 
 
-func update_hand_positions(speed, hand_in_question, max_spread_width, ideal_card_distance, hand_y_position):
-	for i in range(hand_in_question.size()):
+func update_hand_positions(speed):
+	for i in range(player_hand.size()):
 		var new_z = CARD_STATES.BASE_CARD_Z_INDEX + (2*i) # 2 layers per card (face + outline)
-		hand_in_question[i].z_index = new_z
-		hand_in_question[i].zed_index = new_z
+		player_hand[i].z_index = new_z
+		player_hand[i].zed_index = new_z
 
 	var last_tween
-	for i in range(hand_in_question.size()):
-		var new_position = Vector2(calculate_card_position(i, hand_in_question, max_spread_width, ideal_card_distance), hand_y_position - hand_in_question[i].y_offset)
-		var card = hand_in_question[i]
+	for i in range(player_hand.size()):
+		var new_position = Vector2(calculate_card_position(i), CARD_STATES.HAND_Y_POSITION - player_hand[i].y_offset)
+		var card = player_hand[i]
 		card.starting_position = new_position
 		last_tween = animate_card_to_position(card, new_position, speed)
 
 	return last_tween
 
-func calculate_card_position(index, hand_in_question, max_spread, ideal_card_distance):
-	if hand_in_question.size() == 1:
-		return center_screen_x
-
-	var ideal_total_width = (hand_in_question.size() - 1) * ideal_card_distance
-
-	var actual_total_width = min(ideal_total_width, max_spread)
-
-	var card_spacing = actual_total_width / (hand_in_question.size() - 1)
-
-	var x_offset = center_screen_x - (actual_total_width / 2) + (index * card_spacing)
+func calculate_card_position(index):
+	var total_width = (player_hand.size()-1)*CARD_STATES.CARD_WIDTH
+	@warning_ignore("integer_division")
+	var x_offset = center_screen_x + index * CARD_STATES.CARD_WIDTH - total_width / 2
 	return x_offset
 
 func animate_card_to_position(card, new_position, speed):
@@ -89,7 +84,7 @@ func remove_card_from_hand(card):
 	if card in player_hand:
 		player_hand.erase(card)
 		selected_cards.erase(card)
-		update_hand_positions(CARD_STATES.CARD_DRAW_SPEED, player_hand, CARD_STATES.DEFAULT_MAX_SPREAD_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.HAND_Y_POSITION)
+		update_hand_positions(CARD_STATES.CARD_DRAW_SPEED)
 
 
 func get_cards_in_hand() -> Array:

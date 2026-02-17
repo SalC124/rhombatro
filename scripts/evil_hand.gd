@@ -12,7 +12,7 @@ var selected_cards: Array = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	center_screen_x = get_viewport().size.x / 2
-
+	
 
 func add_card_to_hand(card, speed):
 	if card not in evil_player_hand:
@@ -40,10 +40,10 @@ func update_hand_positions(speed):
 		animate_card_to_position(card, new_position, speed)
 
 func calculate_card_position(index):
-
+	
 	center_screen_x = get_viewport().size.x / 2
-	var total_width = (evil_player_hand.size()-1)*CARD_WIDTH
-	var x_offset = center_screen_x - index * CARD_WIDTH + total_width / 2
+	var total_width = (evil_player_hand.size()-1)*CARD_STATES.CARD_WIDTH
+	var x_offset = center_screen_x - index * CARD_STATES.CARD_WIDTH + total_width / 2
 	return x_offset
 
 func animate_card_to_position(card, new_position, speed):

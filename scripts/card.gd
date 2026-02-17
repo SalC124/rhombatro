@@ -41,7 +41,6 @@ func _ready() -> void:
 	# you MUST run the Main scene or you get a "Window Parent" error
 	# if you run as a Card, it'll have no parent of CardManager
 	get_parent().connect_card_signals(self)
-	scale = Vector2(2, 2)
 	prev_x = global_position.x
 	position.y = CARD_STATES.HAND_Y_POSITION
 
