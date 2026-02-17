@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b1s0bdmc3o1lw" path="res://scripts/multiplayer.gd" id="1_cnjq1"]
 [ext_resource type="PackedScene" uid="uid://740761bpqiw2" path="res://scenes/PlayerField.tscn" id="2_20mca"]
 [ext_resource type="PackedScene" uid="uid://6krn81emk1y4" path="res://scenes/EvilField.tscn" id="3_y2vse"]
+[ext_resource type="Script" uid="uid://dd8i0dnsqivr" path="res://scripts/GameLoop.gd" id="4_i0u6e"]
 
 [node name="Main2" type="Node2D" unique_id=1492515000]
 texture_filter = 1
@@ -23,6 +24,9 @@ offset_top = 508.0
 offset_right = 545.0
 offset_bottom = 539.0
 text = "JOIN"
+
+[node name="GameLoop" type="Node" parent="." unique_id=1698302306]
+script = ExtResource("4_i0u6e")
 
 [connection signal="pressed" from="HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]

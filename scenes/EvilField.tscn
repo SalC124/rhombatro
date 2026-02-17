@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://6krn81emk1y4"]
 
 [ext_resource type="Script" uid="uid://p8evnt5tinbi" path="res://scripts/deck.gd" id="1_gakev"]
+[ext_resource type="Script" uid="uid://ckm0i0hrn0lic" path="res://scripts/scoring.gd" id="1_proga"]
 [ext_resource type="Texture2D" uid="uid://bsr2nidd6pxwm" path="res://assets/PC _ Computer - Balatro - Playing Cards - Card Backs, Enhancers and Seals.png" id="2_gakev"]
 [ext_resource type="Script" uid="uid://uxoed6gc20gs" path="res://scripts/player_hand.gd" id="3_proga"]
 [ext_resource type="Script" uid="uid://davr8dw2xo6sd" path="res://scripts/card_manager.gd" id="4_gakev"]
@@ -10,6 +11,7 @@ atlas = ExtResource("2_gakev")
 region = Rect2(1, 1, 69, 93)
 
 [node name="EvilField" type="Node2D" unique_id=1194789600]
+script = ExtResource("1_proga")
 
 [node name="Deck" type="Node2D" parent="." unique_id=372142740]
 position = Vector2(2000, 500)
@@ -20,7 +22,7 @@ script = ExtResource("1_gakev")
 texture_filter = 1
 texture = SubResource("AtlasTexture_ljca3")
 
-[node name="PlayerHand" type="Node2D" parent="." unique_id=230179999]
+[node name="Hand" type="Node2D" parent="." unique_id=230179999]
 script = ExtResource("3_proga")
 
 [node name="CardManager" type="Node2D" parent="." unique_id=1670652172]

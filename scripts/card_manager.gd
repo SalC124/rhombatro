@@ -22,8 +22,8 @@ signal select(card: Node2D)
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
-	player_hand_reference = $"../PlayerHand"
-	
+	player_hand_reference = $"../Hand"
+
 	if get_parent().name == "PlayerField":
 		$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
 
@@ -51,7 +51,7 @@ var is_actually_dragging = false
 
 func start_drag(card):
 	card_being_dragged = card
-	print("Start dragging on :", card_being_dragged)
+	# print("Start dragging on :", card_being_dragged)
 	relative_mouse_pos = card.get_local_mouse_position() # on the card
 	first_click_pos = get_global_mouse_position()
 	is_actually_dragging = false

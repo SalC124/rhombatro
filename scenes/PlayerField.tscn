@@ -1,14 +1,13 @@
 [gd_scene format=3 uid="uid://740761bpqiw2"]
 
 [ext_resource type="Script" uid="uid://davr8dw2xo6sd" path="res://scripts/card_manager.gd" id="1_0njx6"]
-[ext_resource type="Script" uid="uid://rpapaaclmxkf" path="res://scripts/set_up.gd" id="1_uukul"]
+[ext_resource type="Script" uid="uid://ckm0i0hrn0lic" path="res://scripts/scoring.gd" id="1_6j6l4"]
 [ext_resource type="Script" uid="uid://uxoed6gc20gs" path="res://scripts/player_hand.gd" id="2_6j6l4"]
 [ext_resource type="Script" uid="uid://p8evnt5tinbi" path="res://scripts/deck.gd" id="3_uukul"]
 [ext_resource type="Texture2D" uid="uid://bsr2nidd6pxwm" path="res://assets/PC _ Computer - Balatro - Playing Cards - Card Backs, Enhancers and Seals.png" id="4_jas2h"]
 [ext_resource type="Script" uid="uid://c7oif0iu8su4u" path="res://scripts/input_manager.gd" id="5_lw870"]
 [ext_resource type="Texture2D" uid="uid://chuavorpy20pd" path="res://assets/discard-removebg-preview.png" id="6_eaupb"]
 [ext_resource type="FontFile" uid="uid://b4ucaw12l0s1n" path="res://assets/BigBlueTermPlusNerdFontMono-Regular.ttf" id="7_1cvf3"]
-[ext_resource type="Script" uid="uid://dd8i0dnsqivr" path="res://scripts/GameLoop.gd" id="8_ksnjg"]
 [ext_resource type="Texture2D" uid="uid://b0r5v4wboeesk" path="res://assets/rhombatroBg.png" id="9_6j6l4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qqq6x"]
@@ -23,12 +22,12 @@ atlas = ExtResource("6_eaupb")
 region = Rect2(173, 154, 174, 224)
 
 [node name="PlayerField" type="Node2D" unique_id=485966065]
-script = ExtResource("1_uukul")
+script = ExtResource("1_6j6l4")
 
 [node name="CardManager" type="Node2D" parent="." unique_id=1158422826]
 script = ExtResource("1_0njx6")
 
-[node name="PlayerHand" type="Node2D" parent="." unique_id=472486817]
+[node name="Hand" type="Node2D" parent="." unique_id=472486817]
 scale = Vector2(2, 2)
 script = ExtResource("2_6j6l4")
 
@@ -70,9 +69,6 @@ offset_bottom = 807.0
 theme_override_fonts/font = ExtResource("7_1cvf3")
 disabled = true
 text = "Play Hand"
-
-[node name="GameLoop" type="Node" parent="." unique_id=762553274]
-script = ExtResource("8_ksnjg")
 
 [node name="BackgroundImage" type="Sprite2D" parent="." unique_id=147286755]
 z_index = -1
