@@ -4,7 +4,7 @@ const CARD_DRAW_SPEED: float = 0.067
 const DEFAULT_CARD_MOVE_SPEED: float = 0.2
 
 # const CARD_WIDTH: int = (1600 - (DEFAULT_HAND_SIZE * (71 * 2))) / 8
-const CARD_DISTANCE: int = 120
+const CARD_WIDTH: int = 120
 
 enum SUIT {
 	Heart = 0,
@@ -29,9 +29,3 @@ const HAND_Y_POSITION = 1200
 const EVIL_HAND_Y_POSITION = 200
 const SELECTION_Y_OFFSET = 50
 const MAX_PLAYED_HAND_SIZE = 5
-
-const DEFAULT_MAX_SPREAD_WIDTH = 800
-const DEFAULT_IDEAL_CARD_DISTANCE = 400
-
-const PLAYED_HAND_WIDTH = 600
-const PLAYED_HAND_Y = 1000
