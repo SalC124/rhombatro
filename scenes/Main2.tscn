@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://6krn81emk1y4" path="res://scenes/EvilField.tscn" id="3_y2vse"]
 
 [node name="Main2" type="Node2D" unique_id=1492515000]
-texture_filter = 1
 script = ExtResource("1_cnjq1")
 player_field_scene = ExtResource("2_20mca")
 evil_field_scene = ExtResource("3_y2vse")
