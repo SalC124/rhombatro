@@ -3,8 +3,8 @@ extends Node
 var starting_health = 100
 
 const CARD_STATES = preload("res://scripts/card_states.gd")
-@onready var player_hand_ref = $"Hand"
-@onready var deck_ref = $"Deck"
+@onready var player_hand_ref = $Hand
+@onready var deck_ref = $Hand
 
 
 var player_cards_in_play = []
