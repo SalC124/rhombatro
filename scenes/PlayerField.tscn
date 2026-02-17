@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://c0is6uk6evdfw"]
+
+[ext_resource type="Script" uid="uid://davr8dw2xo6sd" path="res://scripts/card_manager.gd" id="1_0njx6"]
+[ext_resource type="Script" path="res://scripts/scoring.gd" id="1_6j6l4"]
+[ext_resource type="Script" path="res://scripts/hand.gd" id="2_6j6l4"]
+[ext_resource type="Script" uid="uid://p8evnt5tinbi" path="res://scripts/deck.gd" id="3_uukul"]
+[ext_resource type="Texture2D" uid="uid://bsr2nidd6pxwm" path="res://assets/PC _ Computer - Balatro - Playing Cards - Card Backs, Enhancers and Seals.png" id="4_jas2h"]
+[ext_resource type="Script" uid="uid://c7oif0iu8su4u" path="res://scripts/input_manager.gd" id="5_lw870"]
+[ext_resource type="Texture2D" uid="uid://chuavorpy20pd" path="res://assets/discard-removebg-preview.png" id="6_eaupb"]
+[ext_resource type="FontFile" uid="uid://b4ucaw12l0s1n" path="res://assets/BigBlueTermPlusNerdFontMono-Regular.ttf" id="7_1cvf3"]
+[ext_resource type="Texture2D" uid="uid://b0r5v4wboeesk" path="res://assets/rhombatroBg.png" id="9_6j6l4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqq6x"]
+atlas = ExtResource("4_jas2h")
+region = Rect2(1, 1, 69, 93)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vummc"]
+size = Vector2(68, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1f0uq"]
+atlas = ExtResource("6_eaupb")
+region = Rect2(173, 154, 174, 224)
+
+[node name="PlayerField" type="Node2D" unique_id=485966065]
+script = ExtResource("1_6j6l4")
+
+[node name="CardManager" type="Node2D" parent="." unique_id=1158422826]
+script = ExtResource("1_0njx6")
+
+[node name="Hand" type="Node2D" parent="." unique_id=472486817]
+scale = Vector2(2, 2)
+script = ExtResource("2_6j6l4")
+
+[node name="Deck" type="Node2D" parent="." unique_id=1238825568]
+position = Vector2(150, 1200)
+scale = Vector2(2, 2)
+script = ExtResource("3_uukul")
+
+[node name="Sprite2D" type="Sprite2D" parent="Deck" unique_id=968892908]
+texture_filter = 1
+texture = SubResource("AtlasTexture_qqq6x")
+
+[node name="Area2D" type="Area2D" parent="Deck" unique_id=1827017807]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D" unique_id=2027285257]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_vummc")
+
+[node name="InputManager" type="Node2D" parent="." unique_id=449373046]
+scale = Vector2(2, 2)
+script = ExtResource("5_lw870")
+
+[node name="Discard" type="Button" parent="." unique_id=1538525852]
+offset_left = 2241.0
+offset_top = 1076.0
+offset_right = 2423.0
+offset_bottom = 1308.0
+scale = Vector2(0.75, 0.75)
+icon = SubResource("AtlasTexture_1f0uq")
+
+[node name="PlayHand" type="Button" parent="." unique_id=1589395860]
+texture_filter = 1
+offset_left = 109.0
+offset_top = 776.0
+offset_right = 195.0
+offset_bottom = 807.0
+theme_override_fonts/font = ExtResource("7_1cvf3")
+disabled = true
+text = "Play Hand"
+
+[node name="BackgroundImage" type="Sprite2D" parent="." unique_id=147286755]
+z_index = -1
+z_as_relative = false
+texture = ExtResource("9_6j6l4")
+centered = false
