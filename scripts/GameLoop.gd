@@ -7,7 +7,6 @@ const CARD_STATES = preload("res://scripts/card_states.gd")
 
 var player_played = false
 var opponent_played = false
-#var opponent_hand = $"../EvilHand".evil_player_hand
 
 var player_cards_in_play = []
 var opponent_cards_in_play = []

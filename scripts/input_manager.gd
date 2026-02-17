@@ -56,7 +56,7 @@ func raycast_at_cursor(input):
 				elif input.button_index == MOUSE_BUTTON_RIGHT:
 					card_found.discard()
 		elif result_collision_mask == COLLISION_MASK_DECK:
-			deck_reference.deck_clicked()
+			deck_reference.draw_card(DEFAULT_HAND_SIZE)
 
 
 func get_card_with_highest_z_index(cards):
