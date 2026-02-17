@@ -38,49 +38,50 @@ func opponent_turn():
 func _on_play_hand_pressed() -> void:
 	$"../PlayHand".disabled=true
 
-
-
-func _on_discard_pressed() -> void:
-	print("=== DISCARD PRESSED ===")
-	print("Selected cards: ", player_hand_ref.selected_cards.size())
-	print("Cards in hand: ", player_hand_ref.player_hand.size())
-	
-	# Disable the button to prevent double-clicks
+func discard_work(x_value, y_value):
 	$"../Discard".disabled = true
-	
 	# Store references to the cards we want to discard
 	var cards_to_discard = player_hand_ref.selected_cards.duplicate()
-	print("Cards to discard: ", cards_to_discard.size())
 	
-	# Clear the selection tracking
+		# Clear the selection tracking
 	player_hand_ref.selected_cards.clear()
 	player_hand_ref.rhombuses = 0
 	
 	# Animate each card to the discard position
 	var animation_count = cards_to_discard.size()
 	var animations_completed = 0
-	
+		
 	for card in cards_to_discard:
-		print("Animating card: ", card.rank, " of suit ", card.suit)
 		
 		# Reset the card's y_offset
 		card.y_offset = 0
 		
-		# Remove from player_hand array
+			# Remove from player_hand array
 		player_hand_ref.player_hand.erase(card)
 		
-		# Animate to discard pile
-		var tween = player_hand_ref.animate_card_to_position(card, Vector2(2500, 1600), CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+			# Animate to discard pile
+		var tween = player_hand_ref.animate_card_to_position(card, Vector2(x_value, y_value), CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
 		
 		tween.finished.connect(func():
-			print("Animation finished for a card")
 			animations_completed += 1
 			card.discard()
-			
-			# When all animations are done, update hand and draw new cards
-			if animations_completed == animation_count:
-				print("All animations complete, updating hand")
-				player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
-				await get_tree().create_timer(CARD_STATES.DEFAULT_CARD_MOVE_SPEED).timeout
-				deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
-				$"../Discard".disabled = false)                
+			)
+				# When all animations are done, update hand and draw new cards
+	
+	player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+	await get_tree().create_timer(CARD_STATES.DEFAULT_CARD_MOVE_SPEED).timeout
+	deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+	$"../Discard".disabled = false 
+
+func _on_discard_pressed() -> void:
+	var player_id = multiplayer.get_unique_id()
+	discard_here_and_for_clients_opponent(player_id)
+	rpc("discard_here_and_for_clients_opponent", player_id)
+		
+	
+@rpc("any_peer")
+func discard_here_and_for_clients_opponent(player_id):
+	if multiplayer.get_unique_id() == player_id: # Disable the button to prevent double-clicks
+		discard_work(CARD_STATES.DISCARD_PLAYER_X, CARD_STATES.DISCARD_PLAYER_Y)
+	else:
+		discard_work(CARD_STATES.DISCARD_EVIL_X, CARD_STATES.DISCARD_EVIL_Y)      

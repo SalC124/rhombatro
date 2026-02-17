@@ -5,6 +5,10 @@ const DEFAULT_CARD_MOVE_SPEED: float = 0.2
 
 # const CARD_WIDTH: int = (1600 - (DEFAULT_HAND_SIZE * (71 * 2))) / 8
 const CARD_WIDTH: int = 120
+const DISCARD_PLAYER_X: int = 2500
+const DISCARD_PLAYER_Y: int = 1600
+const DISCARD_EVIL_X: int = 0
+const DISCARD_EVIL_Y: int = 0
 
 enum SUIT {
 	Heart = 0,
