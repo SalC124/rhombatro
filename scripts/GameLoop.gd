@@ -72,37 +72,24 @@ func discard_player(x_value, y_value,cards_to_discard):
 	deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
 	$"../Discard".disabled = false 
 	
-func fake_discard_evil(x_value,y_value, selected):
+func fake_discard_evil(x_value, y_value, selected):
+	var evil_hand = get_node("../../EvilField/EvilHand")
+	var evil_deck = get_node("../../EvilField/EvilDeck")
+
 	var cards_to_discard = []
-	for i in range (0,selected.size()):
-		cards_to_discard.append($EvilHand.evil_player_hand[i])
-	
-	
-	# Animate each card to the discard position
-	var animation_count = cards_to_discard.size()
-	var animations_completed = 0
-		
+	for i in range(selected.size()):
+		cards_to_discard.append(evil_hand.evil_player_hand[i])
+
 	for card in cards_to_discard:
-		
-		# Reset the card's y_offset
 		card.y_offset = 0
-		
-			# Remove from player_hand array
-		$EvilHand.evil_player_hand.erase(card)
-		
-			# Animate to discard pile
-		var tween = $EvilHand.evil_player_hand.animate_card_to_position(card, Vector2(x_value, y_value), CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
-		
-		tween.finished.connect(func():
-			animations_completed += 1
-			#card.discard()
-			)
-				# When all animations are done, update hand and draw new cards
-	
-	$EvilHand.evil_player_hand.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+		evil_hand.evil_player_hand.erase(card)
+		var tween = evil_hand.animate_card_to_position(card, Vector2(x_value, y_value), CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+		tween.finished.connect(func(): card.discard())
+
+	evil_hand.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
 	await get_tree().create_timer(CARD_STATES.DEFAULT_CARD_MOVE_SPEED).timeout
-	$EvilDeck.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
-	$"../Discard".disabled = false
+	evil_deck.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+	
 
 func _on_discard_pressed() -> void:
 	var player_id = multiplayer.get_unique_id()
