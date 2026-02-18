@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cnm1kimyr26rm"]
 
-[ext_resource type="Script" path="res://scripts/multiplayer.gd" id="1_cnjq1"]
+[ext_resource type="Script" uid="uid://b1s0bdmc3o1lw" path="res://scripts/multiplayer.gd" id="1_cnjq1"]
 [ext_resource type="PackedScene" uid="uid://c0is6uk6evdfw" path="res://scenes/PlayerField.tscn" id="2_20mca"]
 [ext_resource type="PackedScene" uid="uid://claqepgka144f" path="res://scenes/EvilField.tscn" id="3_y2vse"]
 

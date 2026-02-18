@@ -37,9 +37,9 @@ func setup(r: int, s: int):
 	$CardButt.region_rect = Rect2((0)*71, 0*95, 71, 95)
 
 	self.z_as_relative = false
-	$CardImage.z_index = CARD_STATES.BASE_CARD_Z_INDEX+2
-	$CardOutline.z_index = CARD_STATES.BASE_CARD_Z_INDEX+1
-	$CardButt.z_index = CARD_STATES.BASE_CARD_Z_INDEX
+	$CardImage.z_index = CARD_STATES.BASE_CARD_Z_INDEX+1
+	$CardOutline.z_index = CARD_STATES.BASE_CARD_Z_INDEX
+	$CardButt.z_index = CARD_STATES.BASE_CARD_Z_INDEX+2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
