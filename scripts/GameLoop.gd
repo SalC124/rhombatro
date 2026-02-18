@@ -72,13 +72,15 @@ func discard_player(x_value, y_value,cards_to_discard):
 	deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
 	$"../Discard".disabled = false 
 	
-func fake_discard_evil(x_value, y_value, selected):
+func fake_discard_evil(x_value, y_value, selected_indices):
 	var evil_hand = get_node("../../EvilField/EvilHand")
 	var evil_deck = get_node("../../EvilField/EvilDeck")
 
 	var cards_to_discard = []
-	for i in range(selected.size()):
-		cards_to_discard.append(evil_hand.evil_player_hand[i])
+	# Get the actual cards at the selected indices
+	for index in selected_indices:
+		if index < evil_hand.evil_player_hand.size():
+			cards_to_discard.append(evil_hand.evil_player_hand[index])
 
 	for card in cards_to_discard:
 		card.y_offset = 0
@@ -93,14 +95,21 @@ func fake_discard_evil(x_value, y_value, selected):
 
 func _on_discard_pressed() -> void:
 	var player_id = multiplayer.get_unique_id()
-	discard_here_and_for_clients_opponent(player_id)
-	rpc("discard_here_and_for_clients_opponent", player_id)
+	# Get the indices of selected cards in the hand
+	var selected_indices = []
+	for card in player_hand_ref.selected_cards:
+		var index = player_hand_ref.player_hand.find(card)
+		if index != -1:
+			selected_indices.append(index)
+	
+	discard_here_and_for_clients_opponent(player_id, selected_indices)
+	rpc("discard_here_and_for_clients_opponent", player_id, selected_indices)
 		
 	
 @rpc("any_peer")
-func discard_here_and_for_clients_opponent(player_id):
-	var cards_to_discard = player_hand_ref.selected_cards.duplicate()
-	if multiplayer.get_unique_id() == player_id: # Disable the button to prevent double-clicks
+func discard_here_and_for_clients_opponent(player_id, selected_indices):
+	if multiplayer.get_unique_id() == player_id: # This is the player who pressed discard
+		var cards_to_discard = player_hand_ref.selected_cards.duplicate()
 		discard_player(CARD_STATES.DISCARD_PLAYER_X, CARD_STATES.DISCARD_PLAYER_Y, cards_to_discard)
-	else:
-		fake_discard_evil(CARD_STATES.DISCARD_EVIL_X, CARD_STATES.DISCARD_EVIL_Y,cards_to_discard)    
+	else: # This is the opponent seeing the discard
+		fake_discard_evil(CARD_STATES.DISCARD_EVIL_X, CARD_STATES.DISCARD_EVIL_Y, selected_indices)

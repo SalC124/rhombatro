@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c0is6uk6evdfw"]
 
 [ext_resource type="Script" uid="uid://davr8dw2xo6sd" path="res://scripts/card_manager.gd" id="1_0njx6"]
-[ext_resource type="Script" path="res://scripts/set_up.gd" id="1_uukul"]
+[ext_resource type="Script" uid="uid://rpapaaclmxkf" path="res://scripts/set_up.gd" id="1_uukul"]
 [ext_resource type="Script" uid="uid://uxoed6gc20gs" path="res://scripts/player_hand.gd" id="2_6j6l4"]
 [ext_resource type="Script" uid="uid://p8evnt5tinbi" path="res://scripts/deck.gd" id="3_uukul"]
 [ext_resource type="Texture2D" uid="uid://bsr2nidd6pxwm" path="res://assets/PC _ Computer - Balatro - Playing Cards - Card Backs, Enhancers and Seals.png" id="4_jas2h"]

@@ -72,7 +72,7 @@ func _on_area_2d_mouse_exited() -> void:
 	emit_signal("hovered_off", self)
 
 func discard():
-	$Area2D/CollisionShape2D.disabled = true
 	$CardImage.visible = false
 	$CardOutline.visible = false
-	$"../../PlayerHand".remove_card_from_hand(self)
+	$CardButt.visible = false
+	#$"../../PlayerHand".remove_card_from_hand(self)
