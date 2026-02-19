@@ -14,16 +14,34 @@ const CARD_STATES = preload("res://scripts/card_states.gd")
 var player_cards_in_play = []
 
 signal death(id: int)
+signal round_ready(peer_id: int)
+
+const HP_BAR_SCENE = preload("res://scripts/hp_bar.gd")
+var hp_bar: CanvasLayer = null
+
+
+func has_playable_hand() -> bool:
+	for card in player_hand_ref.player_hand:
+		if card.suit == CARD_STATES.SUIT.Diamond:
+			return true
+	for card_data in deck_ref.player_deck:
+		if card_data[1] == CARD_STATES.SUIT.Diamond:
+			return true
+	return false
 
 
 func take_damage(dmg: int) -> void:
 	hp = max(0, hp - dmg)
+	if hp_bar:
+		hp_bar.animate_to(hp)
 	if hp == 0:
 		emit_signal("death", owner_peer_id)
 
 
 func heal(medkits: int) -> void:
 	hp = min(CARD_STATES.STARTING_HP, hp + medkits)
+	if hp_bar:
+		hp_bar.animate_to(hp)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -36,6 +54,10 @@ func _ready_setup() -> void:
 	if not is_local_player:
 		rotation = PI
 		position = Vector2(2560, 1440)
+	else:
+		hp_bar = HP_BAR_SCENE.new()
+		add_child(hp_bar)
+
 
 	$"CardManager".connect("select", func(_card):
 		get_parent().get_node("GameLoop").button_update()
@@ -45,6 +67,22 @@ func _ready_setup() -> void:
 		player_hand_ref.selection_changed.connect(func(index, selected):
 			rpc("receive_selection", index, selected)
 		)
+
+func discard_from_played_hand(caehrds: Array) -> void:
+	var last_tween
+	for caehrd in caehrds:
+		last_tween = player_hand_ref.animate_card_to_position(caehrd, Vector2(3000, 720), CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+
+	if last_tween == null:
+		emit_signal("round_ready", owner_peer_id)
+		return
+
+	last_tween.finished.connect(func():
+		for caehrd in caehrds:
+			caehrd.discard()
+		await deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+		emit_signal("round_ready", owner_peer_id)
+	)
 
 
 @rpc("any_peer")

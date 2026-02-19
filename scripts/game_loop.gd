@@ -4,12 +4,14 @@ const CARD_STATES = preload("res://scripts/card_states.gd")
 var scoring_refs = {}
 
 var played_hands = {}
+var round_ready_received = {}
 
 func set_scoring_refs(peer_id: int, ref: Node) -> void:
 	scoring_refs[peer_id] = ref
 	ref.owner_peer_id = peer_id
 	ref._ready_setup()
 	ref.death.connect(_on_player_death)
+	ref.round_ready.connect(_on_round_ready)
 	if scoring_refs.size() == 2: # make sure this is the second one before starting
 		draw_initial_hands()
 	if peer_id == multiplayer.get_unique_id():
@@ -22,6 +24,11 @@ func set_scoring_refs(peer_id: int, ref: Node) -> void:
 func _on_player_death(peer_id: int) -> void:
 	print("player ", peer_id, " died lmao")
 	# TODO: end screen
+
+
+func _on_round_ready(peer_id: int) -> void:
+	round_ready_received[peer_id] = true
+
 
 func draw_initial_hands() -> void:
 	for feinld in scoring_refs.values():
@@ -61,7 +68,8 @@ func submit_played_hand(peer_id: int, card_data: Array) -> void:
 
 @rpc("any_peer")
 func rpc_submit_played_hand(peer_id: int, card_data: Array) -> void:
-			submit_played_hand(peer_id, card_data)
+	submit_played_hand(peer_id, card_data)
+
 
 func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_score():
 	var peer_ids = scoring_refs.keys()
@@ -101,6 +109,21 @@ func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_
 
 	played_hands.clear()
 
+	if scoring_refs[id_a].hp == 0 or scoring_refs[id_b].hp == 0: # bail if hes already dead
+		return
+
+	round_ready_received.clear()
+	for field in scoring_refs.values():
+		field.discard_from_played_hand(field.player_cards_in_play.duplicate())
+
+	while round_ready_received.size() < 2:
+		await get_tree().process_frame # wait for end of redraws
+
+	for peer_id in scoring_refs:
+		if not scoring_refs[peer_id].has_playable_hand():
+			_on_player_death(peer_id)
+			return
+
 
 func calculate_hand(card_data: Array):
 	var hearts = 0
@@ -114,7 +137,7 @@ func calculate_hand(card_data: Array):
 		var value = rank	# jack=11, queen=12, king=13, ace=14
 		match suit:
 			CARD_STATES.SUIT.Heart:   hearts += value
-			CARD_STATES.SUIT.Club:	clubs += value
+			CARD_STATES.SUIT.Club:	  clubs += value
 			CARD_STATES.SUIT.Diamond: diamonds += 1
 			CARD_STATES.SUIT.Spade:   spades += value
 
