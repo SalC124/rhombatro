@@ -3,10 +3,13 @@ extends Node
 const CARD_STATES = preload("res://scripts/card_states.gd")
 var scoring_refs = {}
 
+var played_hands = {}
+
 func set_scoring_refs(peer_id: int, ref: Node) -> void:
 	scoring_refs[peer_id] = ref
 	ref.owner_peer_id = peer_id
 	ref._ready_setup()
+	ref.death.connect(_on_player_death)
 	if scoring_refs.size() == 2: # make sure this is the second one before starting
 		draw_initial_hands()
 	if peer_id == multiplayer.get_unique_id():
@@ -15,6 +18,10 @@ func set_scoring_refs(peer_id: int, ref: Node) -> void:
 			ref.get_node("Deck")
 		)
 
+
+func _on_player_death(peer_id: int) -> void:
+	print("player ", peer_id, " died lmao")
+	# TODO: end screen
 
 func draw_initial_hands() -> void:
 	for feinld in scoring_refs.values():
@@ -32,7 +39,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	button_update() # this is only temporary. in reality, it should run every change in selection
+	pass
 
 
 func button_update():
@@ -46,6 +53,74 @@ func button_update():
 	else:
 		get_parent().get_node("DiscardButton").disabled = false
 		get_parent().get_node("PlayButton").disabled = hand.rhombuses == 0
+
+func submit_played_hand(peer_id: int, card_data: Array) -> void:
+	played_hands[peer_id] = card_data
+	if played_hands.size() == 2:
+		i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_score()
+
+@rpc("any_peer")
+func rpc_submit_played_hand(peer_id: int, card_data: Array) -> void:
+			submit_played_hand(peer_id, card_data)
+
+func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_score():
+	var peer_ids = scoring_refs.keys()
+	var id_a = peer_ids[0]
+	var id_b = peer_ids[1]
+
+	var hand_a = played_hands[id_a]
+	var hand_b = played_hands[id_b]
+
+	for field in scoring_refs.values():
+		if not field.is_local_player:
+			for card in field.opponent_cards_in_play:
+				card.reveal_opp_card()
+
+	await get_tree().create_timer(0.3).timeout
+
+	var result_a = calculate_hand(hand_a)
+	print("a:", result_a)
+	var result_b = calculate_hand(hand_b)
+	print("b:", result_b)
+
+	fisticuffs(id_a, result_a, id_b, result_b)	# shrimp on the barbie
+	fisticuffs(id_b, result_b, id_a, result_a)	# barbie on the shrimp
+
+	scoring_refs[id_a].heal(result_a.hearts)
+	scoring_refs[id_b].heal(result_b.hearts)
+
+	played_hands.clear()
+
+
+func calculate_hand(card_data: Array):
+	var hearts = 0
+	var clubs = 0
+	var spades = 0
+	var diamonds = 0
+
+	for card in card_data:
+		var rank = card[0]
+		var suit = card[1]
+		var value = rank	# jack=11, queen=12, king=13, ace=14
+		match suit:
+			CARD_STATES.SUIT.Heart:   hearts += value
+			CARD_STATES.SUIT.Club:    clubs += value
+			CARD_STATES.SUIT.Diamond: diamonds += 1
+			CARD_STATES.SUIT.Spade:   spades += value
+
+	return {
+		"hearts": hearts * diamonds,
+		"clubs": clubs * diamonds,
+		"spades": spades * diamonds,
+		"diamonds": diamonds
+	}
+
+
+func fisticuffs(attacker_id: int, attacker_result, defender_id: int, defender_result) -> void:
+	var defender = scoring_refs[defender_id]
+	var shield = defender_result.clubs
+	var damage = max(0, attacker_result.spades - shield)
+	defender.take_damage(damage)
 
 func _on_discard_pressed() -> void:
 	var field = get_local_field()
