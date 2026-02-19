@@ -12,35 +12,38 @@ script = ExtResource("1_cnjq1")
 player_field_scene = ExtResource("2_20mca")
 
 [node name="HostButton" type="Button" parent="." unique_id=836699671]
-offset_left = 1408.0
-offset_top = 528.0
-offset_right = 1459.0
-offset_bottom = 559.0
+offset_left = 1296.0
+offset_top = 704.0
+offset_right = 1352.0
+offset_bottom = 736.0
 text = "HOST"
 
 [node name="JoinButton" type="Button" parent="." unique_id=1228987666]
-offset_left = 502.0
-offset_top = 508.0
-offset_right = 545.0
-offset_bottom = 539.0
+offset_left = 1216.0
+offset_top = 704.0
+offset_right = 1272.0
+offset_bottom = 736.0
 text = "JOIN"
 
 [node name="GameLoop" type="Node" parent="." unique_id=1698302306]
 script = ExtResource("4_i0u6e")
 
 [node name="DiscardButton" type="Button" parent="." unique_id=124394224]
-offset_left = 2241.0
-offset_top = 1076.0
-offset_right = 2423.0
-offset_bottom = 1308.0
+visible = false
+offset_left = 1300.0
+offset_top = 1335.0
+offset_right = 1480.0
+offset_bottom = 1400.0
 theme_override_fonts/font = ExtResource("5_8xah2")
+disabled = true
 text = "Discard"
 
 [node name="PlayButton" type="Button" parent="." unique_id=1583530075]
-offset_left = 109.0
-offset_top = 776.0
-offset_right = 195.0
-offset_bottom = 807.0
+visible = false
+offset_left = 1080.0
+offset_top = 1335.0
+offset_right = 1260.0
+offset_bottom = 1400.0
 theme_override_fonts/font = ExtResource("5_8xah2")
 disabled = true
 text = "Play"

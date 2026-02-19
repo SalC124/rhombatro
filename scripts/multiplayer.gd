@@ -37,3 +37,6 @@ func disable_buttons():
 	$HostButton.visible = false
 	$JoinButton.disabled = true
 	$JoinButton.visible = false
+
+	$DiscardButton.visible = true
+	$PlayButton.visible = true
