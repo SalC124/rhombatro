@@ -18,13 +18,12 @@ func set_scoring_refs(peer_id: int, ref: Node) -> void:
 
 func draw_initial_hands() -> void:
 	for feinld in scoring_refs.values():
+		feinld.generate_and_share_deck()
 		feinld.get_node("Deck").draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
 
 
 func get_local_field() -> Node:
-	if not multiplayer.has_multiplayer_peer():
-		return null # juuuuuuuuust in case (this time i needed it lol)
-	return scoring_refs.get(multiplayer.get_unique_id())
+	return scoring_refs.get(multiplayer.get_unique_id(), null) # me when its just like python
 
 
 # Called when the node enters the scene tree for the first time.

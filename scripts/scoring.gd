@@ -49,6 +49,11 @@ func _on_play_hand_pressed() -> void:
 		return # return early so nothing gets impacted by the opponent
 	player_cards_in_play = player_hand_ref.selected_cards.duplicate()
 
+	var indeces = player_cards_in_play.map(func(caehrd):
+		return player_hand_ref.player_hand.find(caehrd)
+	)
+	rpc("receive_play_hand", indeces)
+
 	var last_card_moved_tween
 	for card in player_cards_in_play:
 		card.get_node("Area2D/CollisionShape2D").disabled = true
@@ -74,6 +79,23 @@ func _on_play_hand_pressed() -> void:
 	get_parent().get_node("GameLoop").button_update()
 
 
+@rpc("any_peer")
+func receive_play_hand(indeces: Array) -> void:
+	if is_local_player:
+		return
+	var cards_to_play = indeces.map(func(i):
+		return player_hand_ref.player_hand[i]
+	)
+	# for data in cards_to_play:
+	# 	var card = find_card_in_hand(data[0], data[1])
+	# 	if card:
+	# 		cards_to_play.append(card)
+	player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED, cards_to_play, CARD_STATES.PLAYED_HAND_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.PLAYED_HAND_Y)
+	for card in cards_to_play:
+		player_hand_ref.player_hand.erase(card)
+	player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED, player_hand_ref.player_hand, CARD_STATES.DEFAULT_MAX_SPREAD_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.HAND_Y_POSITION)
+
+
 func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_score():
 	pass
 
@@ -83,6 +105,11 @@ func _on_discard_pressed() -> void:
 	if not is_local_player:
 		return # return early so nothing gets impacted by the opponent
 	var cards_to_discard = player_hand_ref.selected_cards.duplicate()
+
+	var indeces = cards_to_discard.map(func(caehrd):
+		return player_hand_ref.player_hand.find(caehrd)
+	)
+	rpc("receive_discard", indeces)
 
 	var last_discard_tween
 	for card in cards_to_discard:
@@ -102,3 +129,38 @@ func _on_discard_pressed() -> void:
 
 	player_hand_ref.rhombuses = 0
 	get_parent().get_node("GameLoop").button_update()
+
+
+@rpc("any_peer")
+func receive_discard(indeces: Array) -> void:
+	if is_local_player:
+		return
+	var cards_to_discard = indeces.map(func(i):
+		return player_hand_ref.player_hand[i]
+	)
+	var last_tween
+	for card in cards_to_discard:
+		last_tween = player_hand_ref.animate_card_to_position(card, Vector2(3000, 720), CARD_STATES.DEFAULT_CARD_MOVE_SPEED)
+		player_hand_ref.player_hand.erase(card)
+	var hand_tween = player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED, player_hand_ref.player_hand, CARD_STATES.DEFAULT_MAX_SPREAD_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.HAND_Y_POSITION)
+	var tween_to_wait_for = hand_tween if hand_tween != null else last_tween
+	tween_to_wait_for.finished.connect(func():
+		deck_ref.draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
+	)
+
+
+func generate_and_share_deck() -> void:
+	var derkta = [] # short for 'deck data'
+	for i in range(2,15):
+		for j in range(0,4):
+			derkta.append([i,j])
+	derkta.shuffle()
+	deck_ref.player_deck = derkta.duplicate()
+	rpc("receive_opponent_deck", derkta)
+
+
+@rpc("any_peer")
+func receive_opponent_deck(derkta: Array) -> void:
+	if is_local_player:
+		return
+	deck_ref.player_deck = derkta
