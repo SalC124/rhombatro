@@ -24,8 +24,6 @@ func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	player_hand_reference = $"../Hand"
 
-	if get_parent().name == "PlayerField":
-		$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
 
 func _process(_delta: float) -> void:
 	if card_being_dragged:
@@ -58,6 +56,7 @@ func start_drag(card):
 
 
 func finish_drag():
+	print("finish_drag called")
 	card_being_dragged.scale = Vector2(2.1,2.1)
 
 	# logic for slots if we did them lmao
@@ -87,11 +86,14 @@ func connect_card_signals(card):
 
 
 func on_left_click_released():
+	print("left click released | card_being_dragged: ", card_being_dragged)
 	if card_being_dragged:
 		finish_drag()
 
 
 func on_hovered_over_card(card):
+	if card_being_dragged:
+		return
 	if !is_hovering_on_card:
 		is_hovering_on_card = true
 		highlight_card(card, true)

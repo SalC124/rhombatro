@@ -9,6 +9,11 @@ func set_scoring_refs(peer_id: int, ref: Node) -> void:
 	ref._ready_setup()
 	if scoring_refs.size() == 2: # make sure this is the second one before starting
 		draw_initial_hands()
+	if peer_id == multiplayer.get_unique_id():
+		get_parent().get_node("InputManager").setup(
+			ref.get_node("CardManager"),
+			ref.get_node("Deck")
+		)
 
 
 func draw_initial_hands() -> void:

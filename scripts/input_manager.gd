@@ -15,8 +15,15 @@ func _process(_delta: float) -> void:
 
 
 func _ready() -> void:
-	card_manager_reference = $"../CardManager"
-	deck_reference = $"../Deck"
+	pass
+
+
+func setup(card_manager, deck) -> void:
+	card_manager_reference = card_manager
+	deck_reference = deck
+	left_mouse_button_released.connect(card_manager.on_left_click_released)
+	print("InputManager setup called | card_manager: ", card_manager, " | deck: ", deck)
+
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

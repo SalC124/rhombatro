@@ -33,7 +33,8 @@ func deck_clicked():
 	rpc("draw_here_and_for_clients_opponent", player_id)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func draw_card(player_hand_size, opponent: bool = false):
+func draw_card(player_hand_size):
+	var opponent = not get_parent().is_local_player
 	var cards_to_draw = player_hand_size - $"../Hand".get_cards_in_hand().size()
 
 	for i in range(cards_to_draw):
