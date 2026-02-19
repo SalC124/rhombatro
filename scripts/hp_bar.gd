@@ -2,13 +2,14 @@ extends CanvasLayer
 
 const CARD_STATES = preload("res://scripts/card_states.gd")
 
-var bar
-var label
-var tween
+var bar: ProgressBar
 var hp_value_label: Label
+var tween: Tween
 
 func _ready() -> void:
-	layer = 10  # render on top of everything
+	layer = 10
+
+	var font = load("res://assets/BigBlueTermPlusNerdFontMono-Regular.ttf")
 
 	var container = HBoxContainer.new()
 	container.set_anchors_preset(Control.PRESET_TOP_LEFT)
@@ -16,15 +17,15 @@ func _ready() -> void:
 	container.add_theme_constant_override("separation", 12)
 	add_child(container)
 
-	label = Label.new()
+	var label = Label.new()
 	label.text = "HP"
 	label.add_theme_font_size_override("font_size", 28)
 	label.add_theme_color_override("font_color", Color(1, 0.35, 0.35))
-	var font = load("res://assets/BigBlueTermPlusNerdFontMono-Regular.ttf")
 	label.add_theme_font_override("font", font)
 
 	container.add_child(label)
 
+	# 2. Progress bar
 	bar = ProgressBar.new()
 	bar.min_value = 0
 	bar.max_value = CARD_STATES.STARTING_HP
@@ -32,13 +33,6 @@ func _ready() -> void:
 	bar.custom_minimum_size = Vector2(320, 32)
 	bar.show_percentage = false
 
-	hp_value_label = Label.new()
-	hp_value_label.text = str(CARD_STATES.STARTING_HP) + " / " + str(CARD_STATES.STARTING_HP)
-	hp_value_label.add_theme_font_size_override("font_size", 24)
-	hp_value_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9))
-	container.add_child(hp_value_label)
-
-	# Style: filled portion
 	var fill_style = StyleBoxFlat.new()
 	fill_style.bg_color = Color(0.85, 0.15, 0.15)
 	fill_style.corner_radius_top_left = 6
@@ -47,7 +41,6 @@ func _ready() -> void:
 	fill_style.corner_radius_bottom_right = 6
 	bar.add_theme_stylebox_override("fill", fill_style)
 
-	# Style: background track
 	var bg_style = StyleBoxFlat.new()
 	bg_style.bg_color = Color(0.15, 0.15, 0.15)
 	bg_style.corner_radius_top_left = 6
@@ -55,17 +48,14 @@ func _ready() -> void:
 	bg_style.corner_radius_bottom_left = 6
 	bg_style.corner_radius_bottom_right = 6
 	bar.add_theme_stylebox_override("background", bg_style)
-
 	container.add_child(bar)
 
-	var hp_label = Label.new()
-	hp_label.name = "HPValueLabel"
-	hp_label.text = str(CARD_STATES.STARTING_HP) + " / " + str(CARD_STATES.STARTING_HP)
-	hp_label.add_theme_font_size_override("font_size", 24)
-	hp_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9))
-	hp_label.add_theme_font_override("font", font)
-
-	container.add_child(hp_label)
+	hp_value_label = Label.new()
+	hp_value_label.text = str(CARD_STATES.STARTING_HP) + " / " + str(CARD_STATES.STARTING_HP)
+	hp_value_label.add_theme_font_size_override("font_size", 24)
+	hp_value_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9))
+	hp_value_label.add_theme_font_override("font", font)
+	container.add_child(hp_value_label)
 
 
 func animate_to(new_hp: int) -> void:
@@ -77,7 +67,6 @@ func animate_to(new_hp: int) -> void:
 
 	var old_val = bar.value
 
-	# Flash white briefly if damage taken
 	if new_hp < old_val:
 		var fill_style_white = StyleBoxFlat.new()
 		fill_style_white.bg_color = Color(1, 1, 1)

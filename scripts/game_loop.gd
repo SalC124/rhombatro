@@ -154,8 +154,15 @@ func calculate_hand(card_data: Array):
 func fisticuffs(attacker_id: int, attacker_result, defender_id: int, defender_result) -> void:
 	var defender = scoring_refs[defender_id]
 	var shield = defender_result.clubs
-	var damage = max(0, attacker_result.spades - shield)
+	var raw_damage = attacker_result.spades
+	var blocked = min(shield, raw_damage)
+	var damage = max(0, raw_damage - shield)
 	defender.take_damage(damage)
+
+	if defender.is_local_player:
+		var score_counter = get_parent().get_node("ScoreCounter")
+		score_counter.show_blocked(blocked)
+
 
 func _on_discard_pressed() -> void:
 	var field = get_local_field()
