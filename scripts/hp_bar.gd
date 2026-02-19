@@ -5,6 +5,7 @@ const CARD_STATES = preload("res://scripts/card_states.gd")
 var bar
 var label
 var tween
+var hp_value_label: Label
 
 func _ready() -> void:
 	layer = 10  # render on top of everything
@@ -30,6 +31,12 @@ func _ready() -> void:
 	bar.value = CARD_STATES.STARTING_HP
 	bar.custom_minimum_size = Vector2(320, 32)
 	bar.show_percentage = false
+
+	hp_value_label = Label.new()
+	hp_value_label.text = str(CARD_STATES.STARTING_HP) + " / " + str(CARD_STATES.STARTING_HP)
+	hp_value_label.add_theme_font_size_override("font_size", 24)
+	hp_value_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9))
+	container.add_child(hp_value_label)
 
 	# Style: filled portion
 	var fill_style = StyleBoxFlat.new()
@@ -92,5 +99,5 @@ func animate_to(new_hp: int) -> void:
 
 	tween.tween_property(bar, "value", float(new_hp), 0.45)
 	tween.parallel().tween_method(func(v: float):
-		get_node("HBoxContainer/HPValueLabel").text = str(roundi(v)) + " / " + str(CARD_STATES.STARTING_HP)
+		hp_value_label.text = str(roundi(v)) + " / " + str(CARD_STATES.STARTING_HP)
 	, float(old_val), float(new_hp), 0.45)

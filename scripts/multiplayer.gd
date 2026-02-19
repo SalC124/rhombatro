@@ -1,7 +1,7 @@
 extends Node2D
 
 const PORT = 9967
-const SERVER_ADDRESS = "localhost"
+const SERVER_ADDRESS = "10.179.228.47"
 
 var peer = ENetMultiplayerPeer.new()
 @export var player_field_scene : PackedScene

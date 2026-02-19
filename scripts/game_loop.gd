@@ -115,6 +115,8 @@ func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_
 	round_ready_received.clear()
 	for field in scoring_refs.values():
 		field.discard_from_played_hand(field.player_cards_in_play.duplicate())
+		if field.is_local_player:
+			field.rpc("rpc_discard_from_played_hand")
 
 	while round_ready_received.size() < 2:
 		await get_tree().process_frame # wait for end of redraws

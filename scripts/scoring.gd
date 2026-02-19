@@ -84,6 +84,12 @@ func discard_from_played_hand(caehrds: Array) -> void:
 		emit_signal("round_ready", owner_peer_id)
 	)
 
+@rpc("any_peer")
+func rpc_discard_from_played_hand() -> void:
+	if is_local_player:
+		return
+	discard_from_played_hand(opponent_cards_in_play.duplicate())
+
 
 @rpc("any_peer")
 func receive_selection(index: int, selected: bool) -> void:
