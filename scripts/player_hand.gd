@@ -8,6 +8,8 @@ var center_screen_x
 var selected_cards: Array = []
 var rhombuses: int = 0
 
+signal selection_changed(index: int, selected: bool)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	center_screen_x = get_viewport().size.x / 2
@@ -26,11 +28,13 @@ func toggle_card_select(card):
 			card.y_offset = CARD_STATES.SELECTION_Y_OFFSET
 			if card.suit == CARD_STATES.SUIT.Diamond:
 				rhombuses += 1
+			emit_signal("selection_changed", player_hand.find(card), true) # new signal bc im not making another array to keep track of changes
 	else:
 		selected_cards.erase(card)
 		card.y_offset = 0
 		if card.suit == CARD_STATES.SUIT.Diamond:
 			rhombuses -= 1
+		emit_signal("selection_changed", player_hand.find(card), false)
 
 	# print(selected_cards)
 

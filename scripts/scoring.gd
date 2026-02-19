@@ -18,7 +18,6 @@ func _ready() -> void:
 
 
 func _ready_setup() -> void:
-	print("_ready_setup | owner_peer_id: ", owner_peer_id, " | my_id: ", multiplayer.get_unique_id())
 	is_local_player = owner_peer_id == multiplayer.get_unique_id()
 
 	if not is_local_player:
@@ -27,20 +26,25 @@ func _ready_setup() -> void:
 
 	$"CardManager".connect("select", func(_card):
 		get_parent().get_node("GameLoop").button_update()
-		# ligma(card)
 	)
 
+	if is_local_player:
+		player_hand_ref.selection_changed.connect(func(index, selected):
+			rpc("receive_selection", index, selected)
+		)
 
-func _process(_delta: float) -> void:
-	pass
 
-
-func ligma(_card):
-	print("ligma")
+@rpc("any_peer")
+func receive_selection(index: int, selected: bool) -> void:
+	if is_local_player:
+		return
+	var card = player_hand_ref.player_hand[index]
+	card.y_offset = CARD_STATES.SELECTION_Y_OFFSET if selected else 0
+	player_hand_ref.update_hand_positions(CARD_STATES.CARD_DRAW_SPEED, player_hand_ref.player_hand, CARD_STATES.DEFAULT_MAX_SPREAD_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.HAND_Y_POSITION)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func opponent_turn():
+func _process(_delta: float) -> void:
 	pass
 
 
