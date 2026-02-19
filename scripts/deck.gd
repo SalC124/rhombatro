@@ -10,7 +10,6 @@ func _ready() -> void:
 	position.y = CARD_STATES.HAND_Y_POSITION
 
 func draw_card(player_hand_size):
-	print("draw_card called | is_local: ", get_parent().is_local_player, " | hand size: ", $"../Hand".get_cards_in_hand().size(), " | drawing: ", player_hand_size - $"../Hand".get_cards_in_hand().size())
 	var opponent = not get_parent().is_local_player
 	var cards_to_draw = player_hand_size - $"../Hand".get_cards_in_hand().size()
 

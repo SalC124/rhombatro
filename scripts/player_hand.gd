@@ -16,9 +16,7 @@ func _ready() -> void:
 	$"../CardManager".connect("select", on_select)
 
 func on_select(card):
-	# print(card)
 	toggle_card_select(card)
-	# print("rhombus count: ", rhombuses)
 
 
 func toggle_card_select(card):
@@ -36,7 +34,6 @@ func toggle_card_select(card):
 			rhombuses -= 1
 		emit_signal("selection_changed", player_hand.find(card), false)
 
-	# print(selected_cards)
 
 
 

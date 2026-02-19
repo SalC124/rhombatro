@@ -49,14 +49,12 @@ var is_actually_dragging = false
 
 func start_drag(card):
 	card_being_dragged = card
-	# print("Start dragging on :", card_being_dragged)
 	relative_mouse_pos = card.get_local_mouse_position() # on the card
 	first_click_pos = get_global_mouse_position()
 	is_actually_dragging = false
 
 
 func finish_drag():
-	print("finish_drag called")
 	card_being_dragged.scale = Vector2(2.1,2.1)
 
 	# logic for slots if we did them lmao
@@ -86,7 +84,6 @@ func connect_card_signals(card):
 
 
 func on_left_click_released():
-	print("left click released | card_being_dragged: ", card_being_dragged)
 	if card_being_dragged:
 		finish_drag()
 

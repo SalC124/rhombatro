@@ -105,7 +105,6 @@ func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_
 
 
 func _on_discard_pressed() -> void:
-	print("id: ", multiplayer.get_unique_id)
 	if not is_local_player:
 		return # return early so nothing gets impacted by the opponent
 	var cards_to_discard = player_hand_ref.selected_cards.duplicate()

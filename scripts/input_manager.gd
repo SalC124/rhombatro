@@ -22,17 +22,13 @@ func setup(card_manager, deck) -> void:
 	card_manager_reference = card_manager
 	deck_reference = deck
 	left_mouse_button_released.connect(card_manager.on_left_click_released)
-	print("InputManager setup called | card_manager: ", card_manager, " | deck: ", deck)
 
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			# print()
-			# print("lmb pressed")
 			raycast_at_cursor(event)
 		else:
-			# print("lmb released")
 			emit_signal("left_mouse_button_released")
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
 		if event.pressed:
@@ -44,14 +40,12 @@ func raycast_at_cursor(input):
 	parameters.position= get_global_mouse_position()
 	parameters.collide_with_areas = true
 	var result = space_state.intersect_point(parameters)
-	# print("result: ", result)
 
 
 	if result.size()>0:
 		var result_collision_mask = result[0].collider.collision_mask # r[0] gives RID
 		if result_collision_mask == COLLISION_MASK_CARD:
 			var card_found = get_card_with_highest_z_index(result)
-			# print("card found", card_found)
 
 
 			if card_found:
