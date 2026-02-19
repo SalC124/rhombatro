@@ -3,31 +3,23 @@ extends Node
 const CARD_STATES = preload("res://scripts/card_states.gd")
 var scoring_refs = {}
 
-var player_1_played = false
-var player_2_played = false
-
-var player_1_cards_in_play = []
-var player_2_cards_in_play = []
-
 func set_scoring_refs(peer_id: int, ref: Node) -> void:
 	scoring_refs[peer_id] = ref
 	ref.owner_peer_id = peer_id
+	ref._ready_setup()
+	if scoring_refs.size() == 2: # make sure this is the second one before starting
+		draw_initial_hands()
 
 
-# func player_1_setup(player_id):
-# 	while true:
-# 		await get_tree().create_timer(0.2).timeout
-# 		if multiplayer.get_peers().size() > 0:
-# 			break
-# 	$"PlayerField/Deck".draw_initial_hand()
+func draw_initial_hands() -> void:
+	for feinld in scoring_refs.values():
+		feinld.get_node("Deck").draw_card(CARD_STATES.DEFAULT_HAND_SIZE)
 
 
-# func evil_setup():
-# 	while true:
-# 		await get_tree().create_timer(0.2).timeout
-# 		if multiplayer.get_peers().size() > 0:
-# 			break
-# 	$"EvilField/Deck".draw_initial_hand()
+func get_local_field() -> Node:
+	if not multiplayer.has_multiplayer_peer():
+		return null # juuuuuuuuust in case (this time i needed it lol)
+	return scoring_refs.get(multiplayer.get_unique_id())
 
 
 # Called when the node enters the scene tree for the first time.
@@ -36,12 +28,30 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	pass
+	button_update() # this is only temporary. in reality, it should run every change in selection
 
+
+func button_update():
+	var field = get_local_field()
+	if field == null:
+		return # juuuuuust in case
+	var hand = field.player_hand_ref
+	if hand.selected_cards.size() == 0:
+		get_parent().get_node("DiscardButton").disabled = true
+		get_parent().get_node("PlayButton").disabled = true
+	else:
+		get_parent().get_node("DiscardButton").disabled = false
+		get_parent().get_node("PlayButton").disabled = hand.rhombuses == 0
 
 func _on_discard_pressed() -> void:
-	pass # Replace with function body.
+	var field = get_local_field()
+	if field == null:
+		return
+	field._on_discard_pressed()
 
 
 func _on_play_button_pressed() -> void:
-	pass # Replace with function body.
+	var field = get_local_field()
+	if field == null:
+		return
+	field._on_play_hand_pressed()

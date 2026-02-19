@@ -14,18 +14,19 @@ var player_cards_in_play = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	pass
+
+
+func _ready_setup() -> void:
+	print("_ready_setup | owner_peer_id: ", owner_peer_id, " | my_id: ", multiplayer.get_unique_id())
 	is_local_player = owner_peer_id == multiplayer.get_unique_id()
 
-	if is_local_player:
-		$"Discard".disabled=true
-		$"PlayHand".disabled=true
-	else:
+	if not is_local_player:
 		rotation = PI
 		position = Vector2(2560, 1440)
-		$"Discard".visible = false
-		$"PlayHand".visible = false
+
 	$"CardManager".connect("select", func(_card):
-		button_update()
+		get_parent().get_node("GameLoop").button_update()
 		# ligma(card)
 	)
 
@@ -36,21 +37,6 @@ func _process(_delta: float) -> void:
 
 func ligma(_card):
 	print("ligma")
-
-
-func button_update():
-	if not is_local_player:
-		return # return early so nothing gets impacted by the opponent
-	if player_hand_ref.selected_cards.size() == 0:
-		$"Discard".disabled=true
-		$"PlayHand".disabled=true
-	else:
-		$"Discard".disabled=false
-		if player_hand_ref.rhombuses > 0:
-			$"PlayHand".disabled = false
-		else:
-			$"PlayHand".disabled = true
-	# print(player_hand_ref.rhombuses)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -85,7 +71,7 @@ func _on_play_hand_pressed() -> void:
 	)
 
 	player_hand_ref.rhombuses = 0
-	button_update()
+	get_parent().get_node("GameLoop").button_update()
 
 
 func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_score():
@@ -115,4 +101,4 @@ func _on_discard_pressed() -> void:
 	)
 
 	player_hand_ref.rhombuses = 0
-	button_update()
+	get_parent().get_node("GameLoop").button_update()
