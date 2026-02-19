@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dd8i0dnsqivr" path="res://scripts/game_loop.gd" id="4_i0u6e"]
 [ext_resource type="FontFile" uid="uid://b4ucaw12l0s1n" path="res://assets/BigBlueTermPlusNerdFontMono-Regular.ttf" id="5_8xah2"]
 [ext_resource type="Script" uid="uid://c7oif0iu8su4u" path="res://scripts/input_manager.gd" id="5_bb0ps"]
+[ext_resource type="Script" uid="uid://cmfojul2w2di5" path="res://scripts/score_counter.gd" id="6_bb0ps"]
 
 [node name="Main2" type="Node2D" unique_id=1492515000]
 texture_filter = 1
@@ -51,6 +52,9 @@ text = "Play"
 [node name="InputManager" type="Node2D" parent="." unique_id=1910517496]
 scale = Vector2(2, 2)
 script = ExtResource("5_bb0ps")
+
+[node name="ScoreCounter" type="Node2D" parent="." unique_id=39562879]
+script = ExtResource("6_bb0ps")
 
 [connection signal="pressed" from="HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]

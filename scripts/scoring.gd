@@ -67,7 +67,10 @@ func _on_play_hand_pressed() -> void:
 	player_cards_in_play = player_hand_ref.selected_cards.duplicate()
 
 	var card_data = player_cards_in_play.map(func(caehrd): return [caehrd.rank, caehrd.suit])
-	rpc("receive_play_hand", card_data)
+	var indeces = player_cards_in_play.map(func(caehrd):
+		return player_hand_ref.player_hand.find(caehrd)
+	)
+	rpc("receive_play_hand", indeces)
 	var game_loop = get_parent().get_node("GameLoop")
 	game_loop.submit_played_hand(owner_peer_id, card_data)
 	game_loop.rpc("rpc_submit_played_hand", owner_peer_id, card_data)
@@ -98,15 +101,13 @@ func _on_play_hand_pressed() -> void:
 var opponent_cards_in_play = []
 
 @rpc("any_peer")
-func receive_play_hand(card_data: Array) -> void:
+func receive_play_hand(indeces: Array) -> void:
 	if is_local_player:
 		return
-	var cards_to_play = card_data.map(func(data):
+	var cards_to_play = indeces.map(func(i):
 		for card in player_hand_ref.player_hand:
-			if card.rank == data[0] and card.suit == data[1]:
-				return card
-		return null
-	).filter(func(c): return c != null)
+				return player_hand_ref.player_hand[i]
+	)
 
 	opponent_cards_in_play = cards_to_play.duplicate()
 	player_hand_ref.update_hand_positions(CARD_STATES.DEFAULT_CARD_MOVE_SPEED, cards_to_play, CARD_STATES.PLAYED_HAND_WIDTH, CARD_STATES.DEFAULT_IDEAL_CARD_DISTANCE, CARD_STATES.PLAYED_HAND_Y)

@@ -78,10 +78,20 @@ func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_
 
 	await get_tree().create_timer(0.3).timeout
 
+
+	var score_counter = get_parent().get_node("ScoreCounter")
+	var local_field = get_local_field()
+	var local_id = multiplayer.get_unique_id()
+	var local_hand_data = played_hands[local_id]
+	var local_card_nodes = local_field.player_cards_in_play
+
+	score_counter.animate_hand_sequentially(local_hand_data, local_card_nodes)
+
+	var total_duration = local_hand_data.size() * 0.32
+	await get_tree().create_timer(total_duration).timeout
+
 	var result_a = calculate_hand(hand_a)
-	print("a:", result_a)
 	var result_b = calculate_hand(hand_b)
-	print("b:", result_b)
 
 	fisticuffs(id_a, result_a, id_b, result_b)	# shrimp on the barbie
 	fisticuffs(id_b, result_b, id_a, result_a)	# barbie on the shrimp
