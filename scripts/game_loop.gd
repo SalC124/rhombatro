@@ -104,7 +104,7 @@ func calculate_hand(card_data: Array):
 		var value = rank	# jack=11, queen=12, king=13, ace=14
 		match suit:
 			CARD_STATES.SUIT.Heart:   hearts += value
-			CARD_STATES.SUIT.Club:    clubs += value
+			CARD_STATES.SUIT.Club:	clubs += value
 			CARD_STATES.SUIT.Diamond: diamonds += 1
 			CARD_STATES.SUIT.Spade:   spades += value
 

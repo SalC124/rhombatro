@@ -15,6 +15,7 @@ var rank: int
 var suit: int
 @onready var card_image: Sprite2D = $CardImage
 @onready var card_outline: Sprite2D = $CardOutline
+@onready var card_back: Sprite2D = $CardButt
 
 var zed_index: int
 
@@ -32,9 +33,14 @@ func setup(r: int, s: int):
 	card_outline.texture = load("res://assets/notbalatrooutlines.png")
 	card_outline.region_rect = Rect2((1)*71, 0*95, 71, 95)
 
+	card_back.region_enabled = true
+	card_back.texture = load("res://assets/notbalatrooutlines.png")
+	card_back.region_rect = Rect2((0)*71, 0*95, 71, 95)
+
 	self.z_as_relative = false
 	card_image.z_index = CARD_STATES.BASE_CARD_Z_INDEX + 1
 	card_outline.z_index = CARD_STATES.BASE_CARD_Z_INDEX
+	card_back.z_index = CARD_STATES.BASE_CARD_Z_INDEX - 1
 
 
 func set_as_opponent_card() -> void:
@@ -47,7 +53,15 @@ func set_as_opponent_card() -> void:
 	$Area2D.collision_mask = 0
 
 func reveal_opp_card() -> void:
-	$AnimationPlayer.play("caehrd_flip") # TODO: lok in naste
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(0.1, 2), 0.1)
+	tween.tween_callback(func():
+		$CardButt.visible = false
+		$CardImage.visible = true
+		$CardImage.z_as_relative = false
+		$CardImage.z_index = z_index + 10
+	)
+	tween.tween_property(self, "scale", Vector2(2, 2), 0.1)
 
 
 # Called when the node enters the scene tree for the first time.
