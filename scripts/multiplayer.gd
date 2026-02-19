@@ -41,4 +41,3 @@ func disable_buttons():
 	$DiscardButton.visible = true
 	$PlayButton.visible = true
 	$ScoreCounter.visible = true
-	$HPBar.visible = true
