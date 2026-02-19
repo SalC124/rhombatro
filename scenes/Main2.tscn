@@ -2,14 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b1s0bdmc3o1lw" path="res://scripts/multiplayer.gd" id="1_cnjq1"]
 [ext_resource type="PackedScene" uid="uid://740761bpqiw2" path="res://scenes/PlayerField.tscn" id="2_20mca"]
-[ext_resource type="PackedScene" uid="uid://6krn81emk1y4" path="res://scenes/EvilField.tscn" id="3_y2vse"]
 [ext_resource type="Script" uid="uid://dd8i0dnsqivr" path="res://scripts/game_loop.gd" id="4_i0u6e"]
+[ext_resource type="FontFile" uid="uid://b4ucaw12l0s1n" path="res://assets/BigBlueTermPlusNerdFontMono-Regular.ttf" id="5_8xah2"]
 
 [node name="Main2" type="Node2D" unique_id=1492515000]
 texture_filter = 1
 script = ExtResource("1_cnjq1")
 player_field_scene = ExtResource("2_20mca")
-evil_field_scene = ExtResource("3_y2vse")
 
 [node name="HostButton" type="Button" parent="." unique_id=836699671]
 offset_left = 1408.0
@@ -28,5 +27,24 @@ text = "JOIN"
 [node name="GameLoop" type="Node" parent="." unique_id=1698302306]
 script = ExtResource("4_i0u6e")
 
+[node name="DiscardButton" type="Button" parent="." unique_id=124394224]
+offset_left = 2241.0
+offset_top = 1076.0
+offset_right = 2423.0
+offset_bottom = 1308.0
+theme_override_fonts/font = ExtResource("5_8xah2")
+text = "Discard"
+
+[node name="PlayButton" type="Button" parent="." unique_id=1583530075]
+offset_left = 109.0
+offset_top = 776.0
+offset_right = 195.0
+offset_bottom = 807.0
+theme_override_fonts/font = ExtResource("5_8xah2")
+disabled = true
+text = "Play"
+
 [connection signal="pressed" from="HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="DiscardButton" to="GameLoop" method="_on_discard_pressed"]
+[connection signal="pressed" from="PlayButton" to="GameLoop" method="_on_play_button_pressed"]

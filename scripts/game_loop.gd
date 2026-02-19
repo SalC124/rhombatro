@@ -11,6 +11,7 @@ var player_2_cards_in_play = []
 
 func set_scoring_refs(peer_id: int, ref: Node) -> void:
 	scoring_refs[peer_id] = ref
+	ref.owner_peer_id = peer_id
 
 
 # func player_1_setup(player_id):
@@ -36,3 +37,11 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	pass
+
+
+func _on_discard_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_play_button_pressed() -> void:
+	pass # Replace with function body.

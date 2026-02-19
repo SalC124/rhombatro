@@ -1,6 +1,9 @@
-extends Node
+extends Node2D
 
 var starting_health = 100
+
+var owner_peer_id: int
+var is_local_player: bool
 
 const CARD_STATES = preload("res://scripts/card_states.gd")
 @onready var player_hand_ref = $"Hand"
@@ -11,9 +14,16 @@ var player_cards_in_play = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if get_parent().name == "PlayerField":
+	is_local_player = owner_peer_id == multiplayer.get_unique_id()
+
+	if is_local_player:
 		$"Discard".disabled=true
 		$"PlayHand".disabled=true
+	else:
+		rotation = PI
+		position = Vector2(2560, 1440)
+		$"Discard".visible = false
+		$"PlayHand".visible = false
 	$"CardManager".connect("select", func(_card):
 		button_update()
 		# ligma(card)
@@ -29,6 +39,8 @@ func ligma(_card):
 
 
 func button_update():
+	if not is_local_player:
+		return # return early so nothing gets impacted by the opponent
 	if player_hand_ref.selected_cards.size() == 0:
 		$"Discard".disabled=true
 		$"PlayHand".disabled=true
@@ -47,6 +59,8 @@ func opponent_turn():
 
 
 func _on_play_hand_pressed() -> void:
+	if not is_local_player:
+		return # return early so nothing gets impacted by the opponent
 	player_cards_in_play = player_hand_ref.selected_cards.duplicate()
 
 	var last_card_moved_tween
@@ -79,6 +93,9 @@ func i_used_to_have_hoop_dreams_until_i_found_out_that_there_were_other_ways_to_
 
 
 func _on_discard_pressed() -> void:
+	print("id: ", multiplayer.get_unique_id)
+	if not is_local_player:
+		return # return early so nothing gets impacted by the opponent
 	var cards_to_discard = player_hand_ref.selected_cards.duplicate()
 
 	var last_discard_tween
